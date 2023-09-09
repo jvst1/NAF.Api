@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/NAF
+/NAD.Application/obj
+/NAD.Application/bin/Debug/net6.0
+/NAF.Api/bin/Debug/net6.0
+/NAF.Api/obj
+/NAF.Domain/bin/Debug/net6.0
+/NAF.Domain/obj
+/NAF.Infra.CrossCutting/bin/Debug/net6.0
+/NAF.Infra.CrossCutting/obj
+/NAF.Infra.Data/bin/Debug/net6.0
+/NAF.Infra.Data/obj
