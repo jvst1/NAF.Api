@@ -3,8 +3,6 @@
 ################################################################################
 
 /.vs/NAF
-/NAD.Application/obj
-/NAD.Application/bin/Debug/net6.0
 /NAF.Api/bin/Debug/net6.0
 /NAF.Api/obj
 /NAF.Domain/bin/Debug/net6.0
@@ -14,3 +12,5 @@
 /NAF.Infra.Data/bin/Debug/net6.0
 /NAF.Infra.Data/obj
 /.vs/ProjectEvaluation
+/NAF.Application/bin/Debug/net6.0
+/NAF.Application/obj
