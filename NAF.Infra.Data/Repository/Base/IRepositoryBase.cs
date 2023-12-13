@@ -1,8 +1,6 @@
-﻿using NAF.Domain.Base.Entity;
-
-namespace NAF.Domain.Base.Interface
+﻿namespace NAF.Infra.Data.Repository.Base
 {
-    public interface IRepositoryBase<TEntity> where TEntity : EntityBase
+    public interface IRepositoryBase<TEntity>
     {
         IQueryable<TEntity> GetAll();
         TEntity? GetByCodigo(Guid codigo);

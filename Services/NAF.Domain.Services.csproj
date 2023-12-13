@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NAF.Domain\NAF.Domain.csproj" />
+    <ProjectReference Include="..\NAF.Infra.Data\NAF.Infra.Data.csproj" />
   </ItemGroup>
 
 </Project>

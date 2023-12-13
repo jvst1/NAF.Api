@@ -1,5 +1,4 @@
 ﻿using NAF.Domain.Base.Entity;
-using NAF.Domain.Base.Interface;
 using NAF.Infra.Data.Context;
 using System.Data.Entity;
 
