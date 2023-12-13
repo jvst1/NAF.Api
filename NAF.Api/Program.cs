@@ -1,22 +1,31 @@
-using Microsoft.EntityFrameworkCore;
 using NAF.Infra.CrossCutting.DependencyInjection;
-using NAF.Infra.Data.Context;
+using NAF.Api.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+
+var allowOrigins = "Origins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<DatabaseContext>(x =>
+builder.Services.AddControllers(opt =>
 {
-    x.UseMySql(
-        builder.Configuration.GetConnectionString("NAF"),
-        new MySqlServerVersion(new Version(1, 0, 0))
-        );
+    var policy = new AuthorizationPolicyBuilder("Bearer").RequireAuthenticatedUser().Build();
+    opt.Filters.Add(new AuthorizeFilter(policy));
 });
 
+builder.Services.ConfigureSwagger();
+
+builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
+                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                     .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true)
+                     .AddEnvironmentVariables();
+
+builder.Services.ConfigureDatabase(builder.Configuration);
+builder.Services.ConfigureAppSettings(builder.Configuration);
+builder.Services.ConfigureIdentity();
 builder.Services.AddDependencyInjection();
+builder.Services.ConfigureAuthentication(builder.Configuration);
+builder.Services.ConfigureCors(allowOrigins);
 
 var app = builder.Build();
 
@@ -28,6 +37,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors(allowOrigins);
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

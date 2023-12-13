@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using NAF.Domain.Base.Interface;
+using NAF.Domain.Interface.AutoMapper;
 
 namespace NAF.Infra.CrossCutting.Mapping
 {

@@ -1,4 +1,4 @@
-﻿namespace NAF.Domain.Base.Interface
+﻿namespace NAF.Domain.Interface.AutoMapper
 {
     public interface IMappingService<TDomain>
     {

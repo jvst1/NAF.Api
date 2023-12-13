@@ -9,10 +9,13 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.24" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NAF.Application\NAF.Application.csproj" />
     <ProjectReference Include="..\NAF.Domain\NAF.Domain.csproj" />
+    <ProjectReference Include="..\Services\NAF.Domain.Services.csproj" />
   </ItemGroup>
 
 </Project>
