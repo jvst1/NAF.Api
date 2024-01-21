@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NAF.Api", "NAF.Api\NAF.Api.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NAF.Application", "NAF.Application\NAF.Application.csproj", "{D1F5DC08-2BA2-4DEF-9716-25820F96572F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAF.Domain.Services", "Services\NAF.Domain.Services.csproj", "{D8853054-875E-4D97-AD4A-D6E4A782079F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{D1F5DC08-2BA2-4DEF-9716-25820F96572F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1F5DC08-2BA2-4DEF-9716-25820F96572F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1F5DC08-2BA2-4DEF-9716-25820F96572F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8853054-875E-4D97-AD4A-D6E4A782079F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8853054-875E-4D97-AD4A-D6E4A782079F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8853054-875E-4D97-AD4A-D6E4A782079F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8853054-875E-4D97-AD4A-D6E4A782079F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +69,7 @@ Global
 		{93694A9C-6150-448A-ADF6-BEAC1B590A68} = {8FBDB088-F997-4BCC-AC68-C7C7CCA3E6F6}
 		{EB238E1B-5B5B-421B-AD8B-6CC6A952899B} = {43E0C1BF-5F15-46DC-B51D-0AFC84CD6F6A}
 		{D1F5DC08-2BA2-4DEF-9716-25820F96572F} = {DD85E75F-0A58-4318-89E6-24771F2AC0F6}
+		{D8853054-875E-4D97-AD4A-D6E4A782079F} = {8EB09892-6F0F-4D52-A59B-D16072315618}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B24FC454-B5F5-4FFC-88E3-D8AA8E91A0B7}
