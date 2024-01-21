@@ -5,11 +5,7 @@ using NAF.Domain.Requests;
 
 namespace NAF.Api.Controllers
 {
-    [Authorize]
-    [ApiController]
-    [ApiVersion("1.0")]
-    [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class UserController : NafControllerBase
     {
         private readonly IUserAppService _userAppService;
 

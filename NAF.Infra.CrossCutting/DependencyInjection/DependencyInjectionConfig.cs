@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NAF.Application.Interfaces;
 using NAF.Application.Services;
+using NAF.Domain.Interface.Repositories;
 using NAF.Domain.Interface.Services;
 using NAF.Domain.Services;
+using NAF.Infra.Data.Repository;
 
 namespace NAF.Infra.CrossCutting.DependencyInjection
 {
@@ -34,12 +36,28 @@ namespace NAF.Infra.CrossCutting.DependencyInjection
             services.AddScoped<IAuthAppService, AuthAppService>();
 
             #endregion
+
+            #region Transient
+
+            services.AddTransient<IAreaAppService, AreaAppService>();
+            services.AddTransient<IServicoAppService, ServicoAppService>();
+            services.AddTransient<IPerguntaFrequenteAppService, PerguntaFrequenteAppService>();
+
+            #endregion
         }
         private static void ConfigureMiddlewares(IServiceCollection services)
         {
         }
         private static void ConfigureRepositories(IServiceCollection services)
         {
+            #region Transient
+
+            services.AddTransient<IAreaRepository, AreaRepository>();
+            services.AddTransient<IServicoRepository, ServicoRepository>();
+            services.AddTransient<IPerguntaFrequenteRepository, PerguntaFrequenteRepository>();
+
+            #endregion
+
         }
         private static void ConfigureServices(IServiceCollection services)
         {
@@ -58,6 +76,13 @@ namespace NAF.Infra.CrossCutting.DependencyInjection
         }
         private static void ConfigureDomainServices(IServiceCollection services)
         {
+            #region Transient
+
+            services.AddTransient<IAreaService, AreaService>();
+            services.AddTransient<IServicoService, ServicoService>();
+            services.AddTransient<IPerguntaFrequenteService, PerguntaFrequenteService>();
+
+            #endregion
         }
         private static void ConfigureTransientBase(IServiceCollection services)
         {
