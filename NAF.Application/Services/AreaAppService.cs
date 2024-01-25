@@ -41,6 +41,11 @@ namespace NAF.Application.Services
             return area;
         }
 
+        public List<Servico> GetServicosByCodigoArea(Guid codigoArea)
+        {
+            return _areaRepository.GetServicosByCodigoArea(codigoArea);
+        }
+
         public void UpdateArea(UpdateAreaRequest request)
         {
             var entity = GetArea(request.Codigo);
@@ -57,6 +62,11 @@ namespace NAF.Application.Services
         public void DeleteArea(Guid id)
         {
             var entity = GetArea(id);
+            var servicos = GetServicosByCodigoArea(entity.Codigo);
+
+            if (servicos is not null && servicos.Any())
+                throw new Exception($"Não é possível deletar a area {entity.Nome} por que ela possui um ou mais servicos ativos.");
+
             _areaRepository.Remove(entity);
         }
     }
