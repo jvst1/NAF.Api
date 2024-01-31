@@ -4,6 +4,7 @@ using NAF.Application.Services;
 using NAF.Domain.Interface.Repositories;
 using NAF.Domain.Interface.Services;
 using NAF.Domain.Services;
+using NAF.Domain.Services.Services;
 using NAF.Infra.Data.Repository;
 
 namespace NAF.Infra.CrossCutting.DependencyInjection
@@ -42,6 +43,7 @@ namespace NAF.Infra.CrossCutting.DependencyInjection
             services.AddTransient<IAreaAppService, AreaAppService>();
             services.AddTransient<IServicoAppService, ServicoAppService>();
             services.AddTransient<IPerguntaFrequenteAppService, PerguntaFrequenteAppService>();
+            services.AddTransient<IChamadoAppService, ChamadoAppService>();
 
             #endregion
         }
@@ -55,6 +57,9 @@ namespace NAF.Infra.CrossCutting.DependencyInjection
             services.AddTransient<IAreaRepository, AreaRepository>();
             services.AddTransient<IServicoRepository, ServicoRepository>();
             services.AddTransient<IPerguntaFrequenteRepository, PerguntaFrequenteRepository>();
+            services.AddTransient<IChamadoRepository, ChamadoRepository>();
+            services.AddTransient<IChamadoComentarioRepository, ChamadoComentarioRepository>();
+            services.AddTransient<IChamadoDocumentoRepository, ChamadoDocumentoRepository>();
 
             #endregion
 
@@ -81,6 +86,7 @@ namespace NAF.Infra.CrossCutting.DependencyInjection
             services.AddTransient<IAreaService, AreaService>();
             services.AddTransient<IServicoService, ServicoService>();
             services.AddTransient<IPerguntaFrequenteService, PerguntaFrequenteService>();
+            services.AddTransient<IChamadoService, ChamadoService>();
 
             #endregion
         }
