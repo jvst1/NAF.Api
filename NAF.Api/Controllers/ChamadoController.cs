@@ -20,7 +20,7 @@ namespace NAF.Api.Controllers
             {
                 _chamadoService.CreateChamado(request);
 
-                return Ok("Chamado criada com sucesso.");
+                return Ok("Chamado criada com sucesso");
             }
             catch (Exception ex)
             {
@@ -48,10 +48,10 @@ namespace NAF.Api.Controllers
             try
             {
                 if (!id.Equals(request.Codigo))
-                    return BadRequest("O código informado não é o mesmo.");
+                    return BadRequest("O código informado não é o mesmo");
 
                 _chamadoService.UpdateChamado(request);
-                return Ok("Chamado atualizado com sucesso.");
+                return Ok("Chamado atualizado com sucesso");
             }
             catch (Exception ex)
             {
@@ -59,17 +59,16 @@ namespace NAF.Api.Controllers
             }
         }
 
-
         [HttpPut("{id}/Situacao")]
         public ActionResult UpdateChamadoSituacao([FromBody] UpdateChamadoSituacaoRequest request, [FromRoute] Guid id)
         {
             try
             {
                 if (!id.Equals(request.Codigo))
-                    return BadRequest("O código informado não é o mesmo.");
+                    return BadRequest("O código informado não é o mesmo");
 
                 _chamadoService.UpdateChamadoSituacao(request);
-                return Ok("Chamado atualizado com sucesso.");
+                return Ok("Chamado atualizado com sucesso");
             }
             catch (Exception ex)
             {
@@ -78,19 +77,18 @@ namespace NAF.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteChamado([FromRoute] Guid id)
+        public ActionResult DeleteChamado([FromRoute] Guid id, Guid codigoUsuario)
         {
             try
             {
                 _chamadoService.DeleteChamado(id);
-                return Ok("Chamado apagado com sucesso.");
+                return Ok("Chamado apagado com sucesso");
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-
 
         [HttpPost("{id}/Documento")]
         public ActionResult CreateChamadoDocumento([FromForm] FileUploadRequest request, [FromRoute] Guid id)
@@ -99,7 +97,7 @@ namespace NAF.Api.Controllers
             {
                 _chamadoService.CreateChamadoDocumento(request, id);
 
-                return Ok("Upload do documento realizado criada com sucesso.");
+                return Ok("Upload do documento realizado criada com sucesso");
             }
             catch (Exception ex)
             {
@@ -136,12 +134,12 @@ namespace NAF.Api.Controllers
         }
 
         [HttpDelete("{chamadoId}/Documento/{documentoId}")]
-        public ActionResult DeleteChamadoDocumento([FromRoute] Guid chamadoId, [FromRoute] Guid documentoId)
+        public ActionResult DeleteChamadoDocumento([FromRoute] Guid chamadoId, [FromRoute] Guid documentoId, Guid codigoUsuario)
         {
             try
             {
-                _chamadoService.DeleteChamadoDocumento(chamadoId, documentoId);
-                return Ok("O documento foi apagado com sucesso.");
+                _chamadoService.DeleteChamadoDocumento(chamadoId, documentoId, codigoUsuario);
+                return Ok("O documento foi apagado com sucesso");
             }
             catch (Exception ex)
             {
@@ -156,7 +154,7 @@ namespace NAF.Api.Controllers
             {
                 _chamadoService.CreateChamadoComentario(request, id);
 
-                return Ok("Upload do documento realizado criada com sucesso.");
+                return Ok("Comentario adicionado com sucesso");
             }
             catch (Exception ex)
             {
@@ -184,7 +182,7 @@ namespace NAF.Api.Controllers
             try
             {
                 _chamadoService.UpdateChamadoComentario(chamadoId, comentarioId, request);
-                return Ok("O documento foi apagado com sucesso.");
+                return Ok("O comentario foi atualizado com sucesso");
             }
             catch (Exception ex)
             {
@@ -193,12 +191,26 @@ namespace NAF.Api.Controllers
         }
 
         [HttpDelete("{chamadoId}/Comentario/{comentarioId}")]
-        public ActionResult DeleteChamadoComentario([FromRoute] Guid chamadoId, [FromRoute] Guid comentarioId)
+        public ActionResult DeleteChamadoComentario([FromRoute] Guid chamadoId, [FromRoute] Guid comentarioId, Guid codigoUsuario)
         {
             try
             {
-                _chamadoService.DeleteChamadoComentario(chamadoId, comentarioId);
-                return Ok("O documento foi apagado com sucesso.");
+                _chamadoService.DeleteChamadoComentario(chamadoId, comentarioId, codigoUsuario);
+                return Ok("O comentario foi apagado com sucesso");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/Historico")]
+        public ActionResult GetAllChamadoHistorico([FromRoute] Guid id)
+        {
+            try
+            {
+                var chamado = _chamadoService.GetAllChamadoHistorico(id);
+                return Ok(chamado);
             }
             catch (Exception ex)
             {

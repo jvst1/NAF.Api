@@ -1,9 +1,12 @@
 ﻿using NAF.Application.Interfaces;
 using NAF.Domain.Entities;
+using NAF.Domain.Enum;
 using NAF.Domain.Interface.Repositories;
 using NAF.Domain.Interface.Services;
 using NAF.Domain.Requests;
+using Newtonsoft.Json;
 using System.Text;
+using System.Transactions;
 
 namespace NAF.Application.Services
 {
@@ -13,15 +16,21 @@ namespace NAF.Application.Services
         private readonly IChamadoRepository _chamadoRepository;
         private readonly IChamadoComentarioRepository _chamadoComentarioRepository;
         private readonly IChamadoDocumentoRepository _chamadoDocumentoRepository;
+        private readonly IChamadoHistoricoRepository _chamadoHistoricoRepository;
 
-        public ChamadoAppService(IChamadoService chamadoService, IChamadoRepository chamadoRepository, IChamadoComentarioRepository chamadoComentarioRepository, IChamadoDocumentoRepository chamadoDocumentoRepository)
+        public ChamadoAppService(IChamadoService chamadoService,
+                                 IChamadoRepository chamadoRepository,
+                                 IChamadoComentarioRepository chamadoComentarioRepository,
+                                 IChamadoDocumentoRepository chamadoDocumentoRepository,
+                                 IChamadoHistoricoRepository chamadoHistoricoRepository)
         {
             _chamadoService = chamadoService;
             _chamadoRepository = chamadoRepository;
             _chamadoComentarioRepository = chamadoComentarioRepository;
             _chamadoDocumentoRepository = chamadoDocumentoRepository;
+            _chamadoHistoricoRepository = chamadoHistoricoRepository;
         }
-        
+
         public void CreateChamado(CreateChamadoRequest request)
         {
             var entity = new Chamado
@@ -37,8 +46,14 @@ namespace NAF.Application.Services
 
             _chamadoService.ValidateChamado(entity);
 
+            using var ts = new TransactionScope();
+
             _chamadoRepository.Insert(entity);
             _chamadoRepository.SaveChanges();
+
+            CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoCriado, entity.Codigo, entity.CodigoUsuario, "Chamado Entity", null, JsonConvert.SerializeObject(entity));
+
+            ts.Complete();
         }
 
         public Chamado GetChamado(Guid id)
@@ -53,7 +68,8 @@ namespace NAF.Application.Services
 
         public void UpdateChamado(UpdateChamadoRequest request)
         {
-            var entity = GetChamado(request.Codigo);
+            Chamado entity = GetChamado(request.Codigo);
+            Chamado chamado = entity;
 
             entity.Titulo = request.Titulo;
             entity.Descricao = request.Descricao;
@@ -62,13 +78,20 @@ namespace NAF.Application.Services
 
             entity.DtAlteracao = DateTime.Now;
 
+            using var ts = new TransactionScope();
+
             _chamadoRepository.Update(entity);
             _chamadoRepository.SaveChanges();
+
+            CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoAlterado, request.Codigo, request.CodigoUsuario, "Chamado Entity", JsonConvert.SerializeObject(chamado), JsonConvert.SerializeObject(entity));
+
+            ts.Complete();
         }
 
         public void UpdateChamadoSituacao(UpdateChamadoSituacaoRequest request)
         {
-            var entity = GetChamado(request.Codigo);
+            Chamado entity = GetChamado(request.Codigo);
+            Chamado chamado = entity;
 
             entity.Titulo = request.Titulo;
             entity.Situacao = request.Situacao;
@@ -77,14 +100,27 @@ namespace NAF.Application.Services
 
             entity.DtAlteracao = DateTime.Now;
 
+            using var ts = new TransactionScope();
+
             _chamadoRepository.Update(entity);
             _chamadoRepository.SaveChanges();
+
+            CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoAlterado, request.Codigo, request.CodigoUsuario, "Chamado Entity", JsonConvert.SerializeObject(chamado), JsonConvert.SerializeObject(entity));
+
+            ts.Complete();
         }
 
-        public void DeleteChamado(Guid id)
+        public void DeleteChamado(Guid id, Guid codigoUsuario)
         {
             var entity = GetChamado(id);
+
+            using var ts = new TransactionScope();
+
             _chamadoRepository.Remove(entity);
+
+            CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoDeletado, id, codigoUsuario, "Chamado Entity", JsonConvert.SerializeObject(entity), null);
+
+            ts.Complete();
         }
 
         public void CreateChamadoDocumento(FileUploadRequest request, Guid id)
@@ -104,8 +140,14 @@ namespace NAF.Application.Services
 
             _chamadoService.ValidateChamadoDocumento(entity);
 
+            using var ts = new TransactionScope();
+
             _chamadoDocumentoRepository.Insert(entity);
             _chamadoDocumentoRepository.SaveChanges();
+
+            CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoDocumentoCriado, entity.Codigo, entity.CodigoUsuario, "Chamado Documento Entity", null, JsonConvert.SerializeObject(entity));
+
+            ts.Complete();
         }
 
         public List<ChamadoDocumento> GetAllChamadoDocumento(Guid chamadoId)
@@ -128,10 +170,17 @@ namespace NAF.Application.Services
             return documento;
         }
 
-        public void DeleteChamadoDocumento(Guid chamadoId, Guid documentoId)
+        public void DeleteChamadoDocumento(Guid chamadoId, Guid documentoId, Guid codigoUsuario)
         {
             var documento = GetChamadoDocumento(chamadoId, documentoId);
+
+            using var ts = new TransactionScope();
+
             _chamadoDocumentoRepository.Remove(documento);
+
+            CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoDocumentoDeletado, chamadoId, codigoUsuario, "Chamado Documento Entity", JsonConvert.SerializeObject(documento), null);
+
+            ts.Complete();
         }
 
         public void CreateChamadoComentario(CreateChamadoComentarioRequest request, Guid id)
@@ -147,8 +196,14 @@ namespace NAF.Application.Services
 
             _chamadoService.ValidateChamadoComentario(entity);
 
+            using var ts = new TransactionScope();
+
             _chamadoComentarioRepository.Insert(entity);
             _chamadoComentarioRepository.SaveChanges();
+
+            CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoComentarioCriado, id, entity.CodigoUsuario, "Chamado Comentario Entity", null, JsonConvert.SerializeObject(entity));
+
+            ts.Complete();
         }
 
         public List<ChamadoComentario> GetAllChamadoComentario(Guid chamadoId)
@@ -171,10 +226,11 @@ namespace NAF.Application.Services
 
             return comentario;
         }
-        
+
         public void UpdateChamadoComentario(Guid chamadoId, Guid comentarioId, UpdateChamadoComentarioRequest request)
         {
             var entity = GetChamadoComentario(chamadoId, comentarioId);
+            var comentario = entity;
 
             entity.Mensagem = request.Mensagem;
 
@@ -182,14 +238,53 @@ namespace NAF.Application.Services
 
             entity.DtAlteracao = DateTime.Now;
 
+            using var ts = new TransactionScope();
+
             _chamadoComentarioRepository.Update(entity);
             _chamadoComentarioRepository.SaveChanges();
+
+            CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoComentarioAlterado, chamadoId, request.CodigoUsuario, "Chamado Comentario Entity", JsonConvert.SerializeObject(comentario), JsonConvert.SerializeObject(entity));
+
+            ts.Complete();
         }
 
-        public void DeleteChamadoComentario(Guid chamadoId, Guid documentoId)
+        public void DeleteChamadoComentario(Guid chamadoId, Guid comentarioId, Guid codigoUsuario)
         {
-            var comentario = GetChamadoComentario(chamadoId, documentoId);
+            var comentario = GetChamadoComentario(chamadoId, comentarioId);
+
+            using var ts = new TransactionScope();
+
             _chamadoComentarioRepository.Remove(comentario);
+
+            CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoComentarioDeletado, chamadoId, codigoUsuario, "Chamado Comentario Entity", JsonConvert.SerializeObject(comentario), null);
+
+            ts.Complete();
+        }
+
+        public List<ChamadoHistorico> GetAllChamadoHistorico(Guid id)
+        {
+            var historicoAcoes = _chamadoHistoricoRepository.GetAll().Where(o => o.CodigoChamado.Equals(id)).OrderByDescending(o => o.Id).ToList();
+            if (historicoAcoes is null || historicoAcoes.Count == 0)
+                throw new Exception("Não foram encontrados ações para esse chamado");
+
+            return historicoAcoes;
+        }
+
+        private void CreateChamadoHistorico(TipoAlteracaoEnum tipoAlteracao, Guid codigoChamado, Guid codigoUsuario, string campoAlterado, string? valorAntigo, string? valorNovo)
+        {
+            var entity = new ChamadoHistorico
+            {
+                Codigo = Guid.NewGuid(),
+                CodigoChamado = codigoChamado,
+                CodigoUsuario = codigoUsuario,
+                TipoAlteracao = (int)tipoAlteracao,
+                CampoAlterado = campoAlterado,
+                ValorAntigo = valorAntigo,
+                ValorNovo = valorNovo
+            };
+
+            _chamadoHistoricoRepository.Insert(entity);
+            _chamadoHistoricoRepository.SaveChanges();
         }
     }
 }

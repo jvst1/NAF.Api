@@ -60,6 +60,7 @@ namespace NAF.Infra.CrossCutting.DependencyInjection
             services.AddTransient<IChamadoRepository, ChamadoRepository>();
             services.AddTransient<IChamadoComentarioRepository, ChamadoComentarioRepository>();
             services.AddTransient<IChamadoDocumentoRepository, ChamadoDocumentoRepository>();
+            services.AddTransient<IChamadoHistoricoRepository, ChamadoHistoricoRepository>();
 
             #endregion
 
