@@ -1,7 +1,7 @@
 ﻿using NAF.Domain.Entities;
 using NAF.Domain.Interface.Services;
 
-namespace NAF.Domain.Services
+namespace NAF.Domain.Services.Services
 {
     public class PerguntaFrequenteService : IPerguntaFrequenteService
     {
