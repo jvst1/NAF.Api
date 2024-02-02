@@ -81,7 +81,7 @@ namespace NAF.Api.Controllers
         {
             try
             {
-                _chamadoService.DeleteChamado(id);
+                _chamadoService.DeleteChamado(id, codigoUsuario);
                 return Ok("Chamado apagado com sucesso");
             }
             catch (Exception ex)
