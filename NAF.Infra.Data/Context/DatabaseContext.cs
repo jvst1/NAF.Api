@@ -28,7 +28,7 @@ namespace NAF.Infra.Data.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            var connectionString = "Server=naf-db.cjpukr0vhz1h.sa-east-1.rds.amazonaws.com;Database=naf-db;Uid=admin;Pwd=naf12345;";
+            var connectionString = "NAF";
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
 
