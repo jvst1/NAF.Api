@@ -8,19 +8,15 @@ namespace NAF.Infra.Data.ConfigurationMap
     {
         public void Configure(EntityTypeBuilder<Servico> builder)
         {
-            builder.HasKey(s => s.Codigo);
+            builder.HasKey(s => s.Id);
 
-            builder.Property(c => c.Codigo).IsRequired();
             builder.Property(c => c.Id).ValueGeneratedOnAdd();
+            builder.Property(c => c.Codigo).IsRequired();
             builder.Property(c => c.DtInclusao).IsRequired();
             builder.Property(s => s.Nome).HasMaxLength(255).IsRequired();
             builder.Property(s => s.Descricao).IsRequired(false);
             builder.Property(s => s.DtAlteracao).IsRequired();
-
-            builder.HasOne(s => s.Area)
-                   .WithMany()
-                   .HasForeignKey(s => s.CodigoArea)
-                   .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(s => s.CodigoArea).IsRequired();
         }
     }
 }

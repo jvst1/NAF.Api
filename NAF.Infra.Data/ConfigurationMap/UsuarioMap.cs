@@ -8,10 +8,10 @@ namespace NAF.Infra.Data.ConfigurationMap
     {
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
-            builder.HasKey(u => u.Codigo);
+            builder.HasKey(u => u.Id);
 
-            builder.Property(c => c.Codigo).IsRequired();
             builder.Property(u => u.Id).ValueGeneratedOnAdd();
+            builder.Property(c => c.Codigo).IsRequired();
             builder.Property(c => c.DtInclusao).IsRequired();
             builder.Property(u => u.Nome).HasMaxLength(255).IsRequired(false);
             builder.Property(u => u.Identificador).HasMaxLength(100).IsRequired(false);
@@ -20,11 +20,7 @@ namespace NAF.Infra.Data.ConfigurationMap
             builder.Property(u => u.DocumentoFederal).HasMaxLength(20).IsRequired(false);
             builder.Property(u => u.TipoPerfil).IsRequired();
             builder.Property(u => u.Situacao).IsRequired();
-
-            builder.HasOne(u => u.IdentityUser)
-                   .WithOne()
-                   .HasForeignKey<Usuario>(u => u.IdentityUserId)
-                   .IsRequired(false);
+            builder.Property(u => u.IdentityUserId).IsRequired();
 
             builder.HasIndex(u => u.Email).IsUnique();
         }

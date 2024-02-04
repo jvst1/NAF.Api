@@ -9,7 +9,7 @@ namespace NAF.Api.Extensions
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "ExpenseControl.Api", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Naf.Api", Version = "v1" });
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,

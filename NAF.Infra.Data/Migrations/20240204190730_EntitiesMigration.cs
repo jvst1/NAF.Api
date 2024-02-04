@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NAF.Infra.Data.Migrations
 {
-    public partial class AddedEntities : Migration
+    public partial class EntitiesMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,17 +14,17 @@ namespace NAF.Infra.Data.Migrations
                 name: "Area",
                 columns: table => new
                 {
-                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Nome = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DtAlteracao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     DtInclusao = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Area", x => x.Codigo);
+                    table.PrimaryKey("PK_Area", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -32,19 +32,19 @@ namespace NAF.Infra.Data.Migrations
                 name: "PerguntaFrequente",
                 columns: table => new
                 {
-                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Pergunta = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Resposta = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DtAlteracao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     DtInclusao = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PerguntaFrequente", x => x.Codigo);
+                    table.PrimaryKey("PK_PerguntaFrequente", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -52,7 +52,8 @@ namespace NAF.Infra.Data.Migrations
                 name: "Usuario",
                 columns: table => new
                 {
-                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Nome = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Identificador = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
@@ -65,20 +66,20 @@ namespace NAF.Infra.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TipoPerfil = table.Column<int>(type: "int", nullable: false),
                     Situacao = table.Column<int>(type: "int", nullable: false),
-                    IdentityUserId = table.Column<string>(type: "varchar(255)", nullable: true)
+                    IdentityUserId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     DtInclusao = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuario", x => x.Codigo);
+                    table.PrimaryKey("PK_Usuario", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Usuario_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -86,26 +87,26 @@ namespace NAF.Infra.Data.Migrations
                 name: "Servico",
                 columns: table => new
                 {
-                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Nome = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Descricao = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DtAlteracao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CodigoArea = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    AreaId = table.Column<long>(type: "bigint", nullable: true),
+                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     DtInclusao = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Servico", x => x.Codigo);
+                    table.PrimaryKey("PK_Servico", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Servico_Area_CodigoArea",
-                        column: x => x.CodigoArea,
+                        name: "FK_Servico_Area_AreaId",
+                        column: x => x.AreaId,
                         principalTable: "Area",
-                        principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -113,7 +114,8 @@ namespace NAF.Infra.Data.Migrations
                 name: "Chamado",
                 columns: table => new
                 {
-                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CodigoOperador = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     Titulo = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -122,26 +124,25 @@ namespace NAF.Infra.Data.Migrations
                     Situacao = table.Column<int>(type: "int", nullable: false),
                     DtAlteracao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CodigoUsuario = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    UsuarioId = table.Column<long>(type: "bigint", nullable: true),
                     CodigoServico = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ServicoId = table.Column<long>(type: "bigint", nullable: true),
+                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     DtInclusao = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Chamado", x => x.Codigo);
+                    table.PrimaryKey("PK_Chamado", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Chamado_Servico_CodigoServico",
-                        column: x => x.CodigoServico,
+                        name: "FK_Chamado_Servico_ServicoId",
+                        column: x => x.ServicoId,
                         principalTable: "Servico",
-                        principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Chamado_Usuario_CodigoUsuario",
-                        column: x => x.CodigoUsuario,
+                        name: "FK_Chamado_Usuario_UsuarioId",
+                        column: x => x.UsuarioId,
                         principalTable: "Usuario",
-                        principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -149,31 +150,31 @@ namespace NAF.Infra.Data.Migrations
                 name: "ChamadoComentario",
                 columns: table => new
                 {
-                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Mensagem = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DtAlteracao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CodigoUsuario = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    UsuarioId = table.Column<long>(type: "bigint", nullable: true),
                     CodigoChamado = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ChamadoId = table.Column<long>(type: "bigint", nullable: true),
+                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     DtInclusao = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChamadoComentario", x => x.Codigo);
+                    table.PrimaryKey("PK_ChamadoComentario", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ChamadoComentario_Chamado_CodigoChamado",
-                        column: x => x.CodigoChamado,
+                        name: "FK_ChamadoComentario_Chamado_ChamadoId",
+                        column: x => x.ChamadoId,
                         principalTable: "Chamado",
-                        principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ChamadoComentario_Usuario_CodigoUsuario",
-                        column: x => x.CodigoUsuario,
+                        name: "FK_ChamadoComentario_Usuario_UsuarioId",
+                        column: x => x.UsuarioId,
                         principalTable: "Usuario",
-                        principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -181,31 +182,31 @@ namespace NAF.Infra.Data.Migrations
                 name: "ChamadoDocumento",
                 columns: table => new
                 {
-                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     NomeArquivo = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Arquivo = table.Column<byte[]>(type: "longblob", nullable: true),
                     CodigoUsuario = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    UsuarioId = table.Column<long>(type: "bigint", nullable: true),
                     CodigoChamado = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ChamadoId = table.Column<long>(type: "bigint", nullable: true),
+                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     DtInclusao = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChamadoDocumento", x => x.Codigo);
+                    table.PrimaryKey("PK_ChamadoDocumento", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ChamadoDocumento_Chamado_CodigoChamado",
-                        column: x => x.CodigoChamado,
+                        name: "FK_ChamadoDocumento_Chamado_ChamadoId",
+                        column: x => x.ChamadoId,
                         principalTable: "Chamado",
-                        principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ChamadoDocumento_Usuario_CodigoUsuario",
-                        column: x => x.CodigoUsuario,
+                        name: "FK_ChamadoDocumento_Usuario_UsuarioId",
+                        column: x => x.UsuarioId,
                         principalTable: "Usuario",
-                        principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -213,7 +214,8 @@ namespace NAF.Infra.Data.Migrations
                 name: "ChamadoHistorico",
                 columns: table => new
                 {
-                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TipoAlteracao = table.Column<int>(type: "int", nullable: false),
                     CampoAlterado = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -222,73 +224,67 @@ namespace NAF.Infra.Data.Migrations
                     ValorNovo = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CodigoUsuario = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    UsuarioId = table.Column<long>(type: "bigint", nullable: true),
                     CodigoChamado = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ChamadoId = table.Column<long>(type: "bigint", nullable: true),
+                    Codigo = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     DtInclusao = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChamadoHistorico", x => x.Codigo);
+                    table.PrimaryKey("PK_ChamadoHistorico", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ChamadoHistorico_Chamado_CodigoChamado",
-                        column: x => x.CodigoChamado,
+                        name: "FK_ChamadoHistorico_Chamado_ChamadoId",
+                        column: x => x.ChamadoId,
                         principalTable: "Chamado",
-                        principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ChamadoHistorico_Usuario_CodigoUsuario",
-                        column: x => x.CodigoUsuario,
+                        name: "FK_ChamadoHistorico_Usuario_UsuarioId",
+                        column: x => x.UsuarioId,
                         principalTable: "Usuario",
-                        principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chamado_CodigoServico",
+                name: "IX_Chamado_ServicoId",
                 table: "Chamado",
-                column: "CodigoServico");
+                column: "ServicoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chamado_CodigoUsuario",
+                name: "IX_Chamado_UsuarioId",
                 table: "Chamado",
-                column: "CodigoUsuario");
+                column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chamado_DtAlteracao",
-                table: "Chamado",
-                column: "DtAlteracao");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ChamadoComentario_CodigoChamado",
+                name: "IX_ChamadoComentario_ChamadoId",
                 table: "ChamadoComentario",
-                column: "CodigoChamado");
+                column: "ChamadoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChamadoComentario_CodigoUsuario",
+                name: "IX_ChamadoComentario_UsuarioId",
                 table: "ChamadoComentario",
-                column: "CodigoUsuario");
+                column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChamadoDocumento_CodigoChamado",
+                name: "IX_ChamadoDocumento_ChamadoId",
                 table: "ChamadoDocumento",
-                column: "CodigoChamado");
+                column: "ChamadoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChamadoDocumento_CodigoUsuario",
+                name: "IX_ChamadoDocumento_UsuarioId",
                 table: "ChamadoDocumento",
-                column: "CodigoUsuario");
+                column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChamadoHistorico_CodigoChamado",
+                name: "IX_ChamadoHistorico_ChamadoId",
                 table: "ChamadoHistorico",
-                column: "CodigoChamado");
+                column: "ChamadoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChamadoHistorico_CodigoUsuario",
+                name: "IX_ChamadoHistorico_UsuarioId",
                 table: "ChamadoHistorico",
-                column: "CodigoUsuario");
+                column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PerguntaFrequente_DtAlteracao",
@@ -296,9 +292,9 @@ namespace NAF.Infra.Data.Migrations
                 column: "DtAlteracao");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Servico_CodigoArea",
+                name: "IX_Servico_AreaId",
                 table: "Servico",
-                column: "CodigoArea");
+                column: "AreaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuario_Email",
@@ -309,8 +305,7 @@ namespace NAF.Infra.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Usuario_IdentityUserId",
                 table: "Usuario",
-                column: "IdentityUserId",
-                unique: true);
+                column: "IdentityUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

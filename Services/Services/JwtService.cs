@@ -31,9 +31,9 @@ namespace NAF.Domain.Services.Services
 
             var expiration = DateTime.UtcNow.AddHours(1);
 
-            JwtSecurityToken token = new JwtSecurityToken(
-               issuer: null,
-               audience: null,
+            JwtSecurityToken token = new(
+               issuer: _appSettings.JWT!.Issuer!,
+               audience: _appSettings.JWT!.Audience!,
                claims: claims,
                expires: expiration,
                signingCredentials: creds);
