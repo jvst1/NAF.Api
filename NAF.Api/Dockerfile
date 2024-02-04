@@ -1,16 +1,17 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["NAF.Api/NAF.Api.csproj", "NAF.Api/"]
-COPY ["NAF.Application/NAF.Application.csproj", "NAF.Application/"]
-COPY ["NAF.Domain/NAF.Domain.csproj", "NAF.Domain/"]
-COPY ["NAF.Infra.CrossCutting/NAF.Infra.CrossCutting.csproj", "NAF.Infra.CrossCutting/"]
-COPY ["Services/NAF.Domain.Services.csproj", "Services/"]
-COPY ["NAF.Infra.Data/NAF.Infra.Data.csproj", "NAF.Infra.Data/"]
+COPY ["./NAF.Api/NAF.Api.csproj", "NAF.Api/"]
+COPY ["./NAF.Application/NAF.Application.csproj", "NAF.Application/"]
+COPY ["./NAF.Domain/NAF.Domain.csproj", "NAF.Domain/"]
+COPY ["./NAF.Infra.CrossCutting/NAF.Infra.CrossCutting.csproj", "NAF.Infra.CrossCutting/"]
+COPY ["./Services/NAF.Domain.Services.csproj", "Services/"]
+COPY ["./NAF.Infra.Data/NAF.Infra.Data.csproj", "NAF.Infra.Data/"]
 RUN dotnet restore "./NAF.Api/./NAF.Api.csproj"
 COPY . .
 WORKDIR "/src/NAF.Api"
