@@ -17,10 +17,13 @@ namespace NAF.Api.Extensions
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration["AppSettings:JWT:Issuer"],
+                    ValidAudience = configuration["AppSettings:JWT:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("AppSettings:JWT:Key").Value!)),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = false,
+                    ValidateIssuerSigningKey = true
                 };
             });
         }

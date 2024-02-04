@@ -3,42 +3,51 @@ using NAF.Api.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
-var allowOrigins = "Origins";
-
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddControllers(opt =>
+internal class Program
 {
-    var policy = new AuthorizationPolicyBuilder("Bearer").RequireAuthenticatedUser().Build();
-    opt.Filters.Add(new AuthorizeFilter(policy));
-});
+    private static void Main(string[] args)
+    {
+        var allowOrigins = "Origins";
 
-builder.Services.ConfigureSwagger();
+        var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
-                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                     .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true)
-                     .AddEnvironmentVariables();
+        builder.Services.AddControllers(opt =>
+        {
+            var policy = new AuthorizationPolicyBuilder("Bearer").RequireAuthenticatedUser().Build();
+            opt.Filters.Add(new AuthorizeFilter(policy));
+        });
 
-builder.Services.ConfigureDatabase(builder.Configuration);
-builder.Services.ConfigureAppSettings(builder.Configuration);
-builder.Services.ConfigureIdentity();
-builder.Services.AddDependencyInjection();
-builder.Services.ConfigureAuthentication(builder.Configuration);
-builder.Services.ConfigureCors(allowOrigins);
+        builder.Services.ConfigureSwagger();
 
-var app = builder.Build();
+        builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
+                             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                             .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true)
+                             .AddEnvironmentVariables();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+        builder.Services.ConfigureDatabase(builder.Configuration);
+        builder.Services.ConfigureAppSettings(builder.Configuration);
+        builder.Services.ConfigureIdentity();
+        builder.Services.AddDependencyInjection();
+        builder.Services.ConfigureAuthentication(builder.Configuration);
+        builder.Services.ConfigureCors(allowOrigins);
 
-app.UseHttpsRedirection();
+        var app = builder.Build();
 
-app.UseCors(allowOrigins);
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
 
-app.UseAuthentication();
-app.UseAuthorization();
+        app.UseHttpsRedirection();
 
-app.MapControllers();
+        app.UseCors(allowOrigins);
 
-app.Run();
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
+    }
+}

@@ -7,7 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace NAF.Domain.Services
+namespace NAF.Domain.Services.Services
 {
     public class JwtService : IJwtService
     {
@@ -31,9 +31,9 @@ namespace NAF.Domain.Services
 
             var expiration = DateTime.UtcNow.AddHours(1);
 
-            JwtSecurityToken token = new JwtSecurityToken(
-               issuer: null,
-               audience: null,
+            JwtSecurityToken token = new(
+               issuer: _appSettings.JWT!.Issuer!,
+               audience: _appSettings.JWT!.Audience!,
                claims: claims,
                expires: expiration,
                signingCredentials: creds);
