@@ -1,7 +1,7 @@
 ﻿using NAF.Domain.Entities;
 using NAF.Domain.Interface.Services;
 
-namespace NAF.Domain.Services.Services
+namespace NAF.Domain.Services
 {
     public class ServicoService : IServicoService
     {

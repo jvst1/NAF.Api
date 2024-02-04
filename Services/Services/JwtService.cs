@@ -7,7 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace NAF.Domain.Services.Services
+namespace NAF.Domain.Services
 {
     public class JwtService : IJwtService
     {

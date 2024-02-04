@@ -3,6 +3,7 @@ using NAF.Application.Interfaces;
 using NAF.Application.Services;
 using NAF.Domain.Interface.Repositories;
 using NAF.Domain.Interface.Services;
+using NAF.Domain.Services;
 using NAF.Domain.Services.Services;
 using NAF.Infra.Data.Repository;
 

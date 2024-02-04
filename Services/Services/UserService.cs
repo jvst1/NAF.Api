@@ -3,7 +3,7 @@ using NAF.Domain.Interface.Services;
 using NAF.Domain.Requests;
 using NAF.Domain.ValueObjects;
 
-namespace NAF.Domain.Services.Services
+namespace NAF.Domain.Services
 {
     public class UserService : IUserService
     {
