@@ -32,6 +32,7 @@ namespace NAF.Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult GetAllPerguntaFrequente()
         {
             try
