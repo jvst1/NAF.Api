@@ -2,7 +2,7 @@
 {
     public static class CorsSetup
     {
-        private static readonly string CorsOrigins = "https://naf-6phyih6xc-jvsts-projects.vercel.app";
+        private static readonly string CorsOrigins = "https://naf-web.vercel.app";
 
         public static void ConfigureCors(this IServiceCollection services, string origins)
         {

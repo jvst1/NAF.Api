@@ -5,6 +5,6 @@ namespace NAF.Application.Interfaces
 {
     public interface IAuthAppService
     {
-        public Task<UserToken> Login(LoginRequest loginRequest);
+        public Task<UserToken> Login(LoginRequest request);
     }
 }

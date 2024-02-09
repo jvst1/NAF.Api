@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NAF.Application.Interfaces;
 
 namespace NAF.Api.Controllers
 {
     [AllowAnonymous]
     public class HealthCheckController : NafControllerBase
     {
-        public HealthCheckController()
+        public HealthCheckController(IUserAppService userAppService) : base(userAppService)
         {
         }
 

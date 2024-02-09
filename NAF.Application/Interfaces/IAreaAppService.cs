@@ -6,6 +6,7 @@ namespace NAF.Application.Interfaces
     public interface IAreaAppService
     {
         void CreateArea(CreateAreaRequest request);
+        List<Area> GetAllArea();
         Area GetArea(Guid id);
         void UpdateArea(UpdateAreaRequest request);
         void DeleteArea(Guid id);

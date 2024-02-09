@@ -9,18 +9,18 @@ namespace NAF.Api.Controllers
     {
         private readonly IAuthAppService _authAppService;
 
-        public AuthController(IAuthAppService authAppService)
+        public AuthController(IAuthAppService authAppService, IUserAppService userAppService) : base(userAppService)
         {
             _authAppService = authAppService;
         }
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginRequest loginRequest)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
             try
             {
-                var result = await _authAppService.Login(loginRequest);
+                var result = await _authAppService.Login(request);
                 return Ok(result);
             }
             catch (Exception ex)

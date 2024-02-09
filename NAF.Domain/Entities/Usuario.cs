@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using NAF.Domain.Base.Entity;
+using NAF.Domain.Enum;
 
 namespace NAF.Domain.Entities
 {
@@ -10,8 +11,8 @@ namespace NAF.Domain.Entities
         public string? Email { get; set; }
         public string? TelefoneCelular { get; set; }
         public string? DocumentoFederal { get; set; }
-        public int TipoPerfil { get; set; }
-        public int Situacao { get; set; }
+        public TipoPerfil? TipoPerfil { get; set; }
+        public SituacaoUsuario? Situacao { get; set; }
 
         public string? IdentityUserId { get; set; }
         public IdentityUser? IdentityUser { get; set; }

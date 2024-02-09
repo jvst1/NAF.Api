@@ -33,6 +33,12 @@ namespace NAF.Application.Services
             _perguntaFrequenteRepository.SaveChanges();
         }
 
+        public List<PerguntaFrequente> GetAllPerguntaFrequente()
+        {
+            var perguntasFrequentes = _perguntaFrequenteRepository.GetAll();
+            return perguntasFrequentes.ToList();
+        }
+
         public PerguntaFrequente GetPerguntaFrequente(Guid id)
         {
             var perguntaFrequente = _perguntaFrequenteRepository.GetByCodigo(id);

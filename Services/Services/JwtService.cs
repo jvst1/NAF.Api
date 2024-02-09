@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NAF.Domain.Interface.Services;
 using NAF.Domain.ValueObjects;
+using NAF.Infra.Data.Extensions;
 using NAF.Infra.Data.External_Dependence;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -18,13 +20,16 @@ namespace NAF.Domain.Services.Services
             _appSettings = options.Value;
         }
 
-        public UserToken BuildToken(string email)
+        public UserToken BuildToken<T>(Guid codigoUsuario, string email, T perfil) where T : System.Enum
         {
-            var claims = new[]
+            var roles = GetRoles(perfil);
+            var claims = new List<Claim>()
             {
-                new Claim(JwtRegisteredClaimNames.UniqueName, email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.NameId, codigoUsuario.ToString()),
+                new Claim(JwtRegisteredClaimNames.Name, email),
             };
+
+            claims.AddRange(roles.Select(s => new Claim(ClaimsIdentity.DefaultRoleClaimType, s)));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT!.Key!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -43,6 +48,15 @@ namespace NAF.Domain.Services.Services
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration
             };
+        }
+
+        private IEnumerable<string> GetRoles<T>(T source) where T : System.Enum
+        {
+            var enumValues = EnumExtensions.GetValues<T>();
+
+            var roles = (from value in enumValues where source.HasFlag(value) select value.ToString()).ToList();
+
+            return roles;
         }
     }
 }

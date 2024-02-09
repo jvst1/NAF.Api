@@ -14,6 +14,6 @@ namespace NAF.Application.Services
             _authService = authService;
         }
 
-        public async Task<UserToken> Login(LoginRequest loginRequest) => await _authService.Login(loginRequest);
+        public async Task<UserToken> Login(LoginRequest request) => await _authService.Login(request);
     }
 }

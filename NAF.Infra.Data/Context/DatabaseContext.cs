@@ -28,7 +28,7 @@ namespace NAF.Infra.Data.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            var connectionString = "NAF";
+            var connectionString = Configuration.GetConnectionString("NAF");
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
 

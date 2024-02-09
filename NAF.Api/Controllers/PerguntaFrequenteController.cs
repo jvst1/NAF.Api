@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NAF.Application.Interfaces;
+using NAF.Domain.Enum;
 using NAF.Domain.Requests;
 
 namespace NAF.Api.Controllers
@@ -8,12 +10,13 @@ namespace NAF.Api.Controllers
     {
         private readonly IPerguntaFrequenteAppService _perguntaFrequenteService;
 
-        public PerguntaFrequenteController(IPerguntaFrequenteAppService perguntaFrequenteService)
+        public PerguntaFrequenteController(IPerguntaFrequenteAppService perguntaFrequenteService, IUserAppService userAppService) : base(userAppService)
         {
             _perguntaFrequenteService = perguntaFrequenteService;
         }
 
         [HttpPost]
+        [Authorize(Roles = nameof(TipoPerfil.Professor) + "," + nameof(TipoPerfil.Aluno))]
         public ActionResult CreatePerguntaFrequente(CreatePerguntaFrequenteRequest request)
         {
             try
@@ -29,6 +32,23 @@ namespace NAF.Api.Controllers
         }
 
         [HttpGet]
+        public ActionResult GetAllPerguntaFrequente()
+        {
+            try
+            {
+                var perguntasFrequentes = _perguntaFrequenteService.GetAllPerguntaFrequente();
+                if (perguntasFrequentes is null || perguntasFrequentes?.Count == 0)
+                    return NoContent();
+
+                return Ok(perguntasFrequentes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
         public ActionResult GetPerguntaFrequente(Guid id)
         {
             try
@@ -43,6 +63,7 @@ namespace NAF.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = nameof(TipoPerfil.Professor) + "," + nameof(TipoPerfil.Aluno))]
         public ActionResult UpdatePerguntaFrequente([FromBody] UpdatePerguntaFrequenteRequest request, [FromRoute] Guid id)
         {
             try
@@ -60,6 +81,7 @@ namespace NAF.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = nameof(TipoPerfil.Professor) + "," + nameof(TipoPerfil.Aluno))]
         public ActionResult DeletePerguntaFrequente([FromRoute] Guid id)
         {
             try

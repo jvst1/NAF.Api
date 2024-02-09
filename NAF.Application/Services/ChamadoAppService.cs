@@ -13,18 +13,21 @@ namespace NAF.Application.Services
     public class ChamadoAppService : IChamadoAppService
     {
         private readonly IChamadoService _chamadoService;
+        private readonly IUserAppService _userAppService;
         private readonly IChamadoRepository _chamadoRepository;
         private readonly IChamadoComentarioRepository _chamadoComentarioRepository;
         private readonly IChamadoDocumentoRepository _chamadoDocumentoRepository;
         private readonly IChamadoHistoricoRepository _chamadoHistoricoRepository;
 
         public ChamadoAppService(IChamadoService chamadoService,
+                                 IUserAppService userAppService,
                                  IChamadoRepository chamadoRepository,
                                  IChamadoComentarioRepository chamadoComentarioRepository,
                                  IChamadoDocumentoRepository chamadoDocumentoRepository,
                                  IChamadoHistoricoRepository chamadoHistoricoRepository)
         {
             _chamadoService = chamadoService;
+            _userAppService = userAppService;
             _chamadoRepository = chamadoRepository;
             _chamadoComentarioRepository = chamadoComentarioRepository;
             _chamadoDocumentoRepository = chamadoDocumentoRepository;
@@ -54,6 +57,19 @@ namespace NAF.Application.Services
             CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoCriado, entity.Codigo, entity.CodigoUsuario, "Chamado Entity", null, JsonConvert.SerializeObject(entity));
 
             ts.Complete();
+        }
+
+        public List<Chamado> GetAllChamado(Guid codigoUsuario)
+        {
+            var usuario = _userAppService.GetUserByCodigo(codigoUsuario);
+
+            return usuario.TipoPerfil switch
+            {
+                TipoPerfil.Comunidade => _chamadoRepository.GetAll().Where(o => o.CodigoUsuario.Equals(codigoUsuario)).ToList(),
+                TipoPerfil.Aluno => _chamadoRepository.GetAll().Where(o => o.CodigoOperador.Equals(codigoUsuario)).ToList(),
+                TipoPerfil.Professor => _chamadoRepository.GetAll().ToList(),
+                _ => throw new ArgumentOutOfRangeException("Tipo de perfil não cadastrado no sistema."),
+            };
         }
 
         public Chamado GetChamado(Guid id)

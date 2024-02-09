@@ -6,6 +6,7 @@ namespace NAF.Application.Interfaces
     public interface IChamadoAppService
     {
         void CreateChamado(CreateChamadoRequest request);
+        List<Chamado> GetAllChamado(Guid codigoUsuario);
         Chamado GetChamado(Guid id);
         void UpdateChamado(UpdateChamadoRequest request);
         void UpdateChamadoSituacao(UpdateChamadoSituacaoRequest request);

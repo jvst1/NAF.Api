@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NAF.Application.Interfaces;
+using NAF.Domain.Enum;
 using NAF.Domain.Requests;
 
 namespace NAF.Api.Controllers
@@ -8,12 +10,13 @@ namespace NAF.Api.Controllers
     {
         private readonly IAreaAppService _areaService;
 
-        public AreaController(IAreaAppService areaService)
+        public AreaController(IAreaAppService areaService, IUserAppService userAppService) : base(userAppService)
         {
             _areaService = areaService;
         }
 
         [HttpPost]
+        [Authorize(Roles = nameof(TipoPerfil.Professor))]
         public ActionResult CreateArea(CreateAreaRequest request)
         {
             try
@@ -29,6 +32,25 @@ namespace NAF.Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
+        public ActionResult GetAllArea()
+        {
+            try
+            {
+                var area = _areaService.GetAllArea();
+
+                if (area is null || area?.Count == 0)
+                    return NoContent();
+
+                return Ok(area);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
         public ActionResult GetArea(Guid id)
         {
             try
@@ -43,6 +65,7 @@ namespace NAF.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = nameof(TipoPerfil.Professor))]
         public ActionResult UpdateArea([FromBody] UpdateAreaRequest request, [FromRoute] Guid id)
         {
             try
@@ -60,6 +83,7 @@ namespace NAF.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = nameof(TipoPerfil.Professor))]
         public ActionResult DeleteArea([FromRoute] Guid id)
         {
             try

@@ -20,7 +20,7 @@ namespace NAF.Domain.Services.Services
             if (string.IsNullOrEmpty(servico.Descricao))
                 throw new ArgumentException("Uma breve descrição é obrigatória.");
 
-            if (!servico.CodigoArea.Equals(Guid.Empty))
+            if (servico.CodigoArea.Equals(Guid.Empty))
                 throw new ArgumentException("Uma area deve ser selecionada. O preenchimento do campo é obrigatório.");
         }
     }

@@ -34,6 +34,12 @@ namespace NAF.Application.Services
             _servicoRepository.SaveChanges();
         }
 
+        public List<Servico> GetAllServico()
+        {
+            var servicos = _servicoRepository.GetAll();
+            return servicos.ToList();
+        }
+
         public Servico GetServico(Guid id)
         {
             var servico = _servicoRepository.GetByCodigo(id);

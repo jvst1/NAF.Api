@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NAF.Application.Interfaces;
+using NAF.Domain.Enum;
 using NAF.Domain.Requests;
 
 namespace NAF.Api.Controllers
@@ -8,7 +10,7 @@ namespace NAF.Api.Controllers
     {
         private readonly IChamadoAppService _chamadoService;
 
-        public ChamadoController(IChamadoAppService chamadoService)
+        public ChamadoController(IChamadoAppService chamadoService, IUserAppService userAppService) : base(userAppService)
         {
             _chamadoService = chamadoService;
         }
@@ -29,6 +31,23 @@ namespace NAF.Api.Controllers
         }
 
         [HttpGet]
+        public ActionResult GetAllChamado()
+        {
+            try
+            {
+                var chamado = _chamadoService.GetAllChamado(GetUsuarioLogado().Codigo);
+                if (chamado == null || chamado?.Count == 0)
+                    return NoContent();
+
+                return Ok(chamado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
         public ActionResult GetChamado(Guid id)
         {
             try
@@ -60,6 +79,7 @@ namespace NAF.Api.Controllers
         }
 
         [HttpPut("{id}/Situacao")]
+        [Authorize(Roles = nameof(TipoPerfil.Professor) + "," + nameof(TipoPerfil.Aluno))]
         public ActionResult UpdateChamadoSituacao([FromBody] UpdateChamadoSituacaoRequest request, [FromRoute] Guid id)
         {
             try
@@ -77,6 +97,7 @@ namespace NAF.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = nameof(TipoPerfil.Professor))]
         public ActionResult DeleteChamado([FromRoute] Guid id, Guid codigoUsuario)
         {
             try

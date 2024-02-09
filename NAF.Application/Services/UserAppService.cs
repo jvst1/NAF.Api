@@ -1,4 +1,7 @@
 ﻿using NAF.Application.Interfaces;
+using NAF.Domain.Entities;
+using NAF.Domain.Enum;
+using NAF.Domain.Interface.Repositories;
 using NAF.Domain.Interface.Services;
 using NAF.Domain.Requests;
 using NAF.Domain.ValueObjects;
@@ -9,14 +12,19 @@ namespace NAF.Application.Services
     {
         private readonly IUserService _userService;
 
-        public UserAppService(IUserService userService)
+        public UserAppService(IUserService userService, IUsuarioRepository usuarioRepository)
         {
             _userService = userService;
         }
 
-        public async Task<UserToken> CreateUser(CreateUserRequest createUserRequest)
+        public async Task<UserToken> CreateUser(CreateUserRequest request, TipoPerfil tipoPerfil)
         {
-            return await _userService.CreateUser(createUserRequest);
+            return await _userService.CreateUser(request, tipoPerfil);
+        }
+
+        public Usuario GetUserByCodigo(Guid id)
+        {
+            return _userService.GetUserByCodigo(id);
         }
     }
 }

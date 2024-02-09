@@ -32,6 +32,11 @@ namespace NAF.Application.Services
             _areaRepository.SaveChanges();
         }
 
+        public List<Area> GetAllArea()
+        {
+            return _areaRepository.GetAll().ToList();
+        }
+
         public Area GetArea(Guid id)
         {
             var area = _areaRepository.GetByCodigo(id);
