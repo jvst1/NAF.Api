@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NAF.Domain.Enum;
 using NAF.Domain.Interface.Services;
 using NAF.Domain.ValueObjects;
 using NAF.Infra.Data.Extensions;
@@ -20,9 +21,9 @@ namespace NAF.Domain.Services.Services
             _appSettings = options.Value;
         }
 
-        public UserToken BuildToken<T>(Guid codigoUsuario, string email, T perfil) where T : System.Enum
+        public UserToken BuildToken(Guid codigoUsuario, string email, TipoPerfil tipoPerfil)
         {
-            var roles = GetRoles(perfil);
+            var roles = GetRoles(tipoPerfil);
             var claims = new List<Claim>()
             {
                 new Claim(JwtRegisteredClaimNames.NameId, codigoUsuario.ToString()),
@@ -45,6 +46,9 @@ namespace NAF.Domain.Services.Services
 
             return new UserToken()
             {
+                CodigoUsuario = codigoUsuario,
+                Email = email,
+                TipoPerfil = tipoPerfil,
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration
             };

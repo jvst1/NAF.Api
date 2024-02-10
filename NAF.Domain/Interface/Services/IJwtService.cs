@@ -1,9 +1,10 @@
-﻿using NAF.Domain.ValueObjects;
+﻿using NAF.Domain.Enum;
+using NAF.Domain.ValueObjects;
 
 namespace NAF.Domain.Interface.Services
 {
     public interface IJwtService
     {
-        UserToken BuildToken<T>(Guid codigoUsuario, string email, T perfil) where T : System.Enum;
+        UserToken BuildToken(Guid codigoUsuario, string email, TipoPerfil tipoPerfil);
     }
 }
