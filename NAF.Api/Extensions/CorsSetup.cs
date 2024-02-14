@@ -11,6 +11,7 @@
                 options.AddPolicy(name: origins, policy =>
                 {
                     policy.WithOrigins(CorsOrigins)
+                          .AllowAnyOrigin()
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                 });
