@@ -193,7 +193,7 @@ namespace NAF.Application.Services
             ts.Complete();
         }
 
-        public void CreateChamadoDocumento(FileUploadRequest request, Guid id)
+        public ChamadoDocumento CreateChamadoDocumento(FileUploadRequest request, Guid id)
         {
             using var binaryReader = new BinaryReader(request.File.OpenReadStream(), Encoding.BigEndianUnicode);
             var file = binaryReader.ReadBytes((int)request.File.Length);
@@ -218,6 +218,8 @@ namespace NAF.Application.Services
             CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoDocumentoCriado, entity.Codigo, entity.CodigoUsuario, "Chamado Documento Entity", null, JsonConvert.SerializeObject(entity));
 
             ts.Complete();
+
+            return entity;
         }
 
         public List<ChamadoDocumento> GetAllChamadoDocumento(Guid chamadoId)
@@ -286,7 +288,7 @@ namespace NAF.Application.Services
             ts.Complete();
         }
 
-        public void CreateChamadoComentario(CreateChamadoComentarioRequest request, Guid id)
+        public ChamadoComentario CreateChamadoComentario(CreateChamadoComentarioRequest request, Guid id)
         {
             var entity = new ChamadoComentario
             {
@@ -307,6 +309,8 @@ namespace NAF.Application.Services
             CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoComentarioCriado, id, entity.CodigoUsuario, "Chamado Comentario Entity", null, JsonConvert.SerializeObject(entity));
 
             ts.Complete();
+
+            return entity;
         }
 
         public List<ChamadoComentario> GetAllChamadoComentario(Guid chamadoId)

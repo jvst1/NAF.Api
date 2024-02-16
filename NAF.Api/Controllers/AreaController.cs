@@ -21,9 +21,9 @@ namespace NAF.Api.Controllers
         {
             try
             {
-                _areaService.CreateArea(request);
+                var response = _areaService.CreateArea(request);
 
-                return Ok("Area criada com sucesso.");
+                return Ok(response);
             }
             catch (Exception ex)
             {

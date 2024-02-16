@@ -21,9 +21,9 @@ namespace NAF.Api.Controllers
         {
             try
             {
-                _perguntaFrequenteService.CreatePerguntaFrequente(request);
+                var response = _perguntaFrequenteService.CreatePerguntaFrequente(request);
 
-                return Ok("PerguntaFrequente criada com sucesso.");
+                return Ok(response);
             }
             catch (Exception ex)
             {

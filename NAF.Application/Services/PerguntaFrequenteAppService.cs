@@ -17,7 +17,7 @@ namespace NAF.Application.Services
             _perguntaFrequenteRepository = perguntaFrequenteRepository;
         }
 
-        public void CreatePerguntaFrequente(CreatePerguntaFrequenteRequest request)
+        public PerguntaFrequente CreatePerguntaFrequente(CreatePerguntaFrequenteRequest request)
         {
             var entity = new PerguntaFrequente
             {
@@ -31,6 +31,8 @@ namespace NAF.Application.Services
 
             _perguntaFrequenteRepository.Insert(entity);
             _perguntaFrequenteRepository.SaveChanges();
+
+            return entity;
         }
 
         public List<PerguntaFrequente> GetAllPerguntaFrequente()

@@ -116,9 +116,9 @@ namespace NAF.Api.Controllers
         {
             try
             {
-                _chamadoService.CreateChamadoDocumento(request, id);
+                var response = _chamadoService.CreateChamadoDocumento(request, id);
 
-                return Ok("Upload do documento realizado criada com sucesso");
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -173,9 +173,9 @@ namespace NAF.Api.Controllers
         {
             try
             {
-                _chamadoService.CreateChamadoComentario(request, id);
+                var response = _chamadoService.CreateChamadoComentario(request, id);
 
-                return Ok("Comentario adicionado com sucesso");
+                return Ok(response);
             }
             catch (Exception ex)
             {

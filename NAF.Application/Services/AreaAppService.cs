@@ -17,7 +17,7 @@ namespace NAF.Application.Services
             _areaRepository = areaRepository;
         }
 
-        public void CreateArea(CreateAreaRequest request)
+        public Area CreateArea(CreateAreaRequest request)
         {
             var entity = new Area
             {
@@ -30,6 +30,8 @@ namespace NAF.Application.Services
 
             _areaRepository.Insert(entity);
             _areaRepository.SaveChanges();
+
+            return entity;
         }
 
         public List<Area> GetAllArea()

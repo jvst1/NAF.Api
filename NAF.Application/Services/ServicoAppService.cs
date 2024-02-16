@@ -9,15 +9,17 @@ namespace NAF.Application.Services
     public class ServicoAppService : IServicoAppService
     {
         private readonly IServicoService _servicoService;
+        private readonly IAreaAppService _areaAppService;
         private readonly IServicoRepository _servicoRepository;
 
-        public ServicoAppService(IServicoService servicoService, IServicoRepository servicoRepository)
+        public ServicoAppService(IServicoService servicoService, IAreaAppService areaAppService, IServicoRepository servicoRepository)
         {
             _servicoService = servicoService;
+            _areaAppService = areaAppService;
             _servicoRepository = servicoRepository;
         }
 
-        public void CreateServico(CreateServicoRequest request)
+        public Servico CreateServico(CreateServicoRequest request)
         {
             var entity = new Servico
             {
@@ -32,6 +34,8 @@ namespace NAF.Application.Services
 
             _servicoRepository.Insert(entity);
             _servicoRepository.SaveChanges();
+
+            return entity;
         }
 
         public List<Servico> GetAllServico()
@@ -46,6 +50,10 @@ namespace NAF.Application.Services
 
             if (servico is null)
                 throw new KeyNotFoundException($"Servico com o codigo {id} não foi encontrada.");
+
+            if (servico.CodigoArea != Guid.Empty)
+                servico.Area = _areaAppService.GetArea(servico.CodigoArea);
+
             return servico;
         }
 

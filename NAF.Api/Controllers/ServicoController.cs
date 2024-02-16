@@ -21,9 +21,9 @@ namespace NAF.Api.Controllers
         {
             try
             {
-                _servicoService.CreateServico(request);
+                var response = _servicoService.CreateServico(request);
 
-                return Ok("Servico criado com sucesso.");
+                return Ok(response);
             }
             catch (Exception ex)
             {

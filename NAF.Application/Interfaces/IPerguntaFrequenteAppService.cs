@@ -5,7 +5,7 @@ namespace NAF.Application.Interfaces
 {
     public interface IPerguntaFrequenteAppService
     {
-        void CreatePerguntaFrequente(CreatePerguntaFrequenteRequest request);
+        PerguntaFrequente CreatePerguntaFrequente(CreatePerguntaFrequenteRequest request);
         List<PerguntaFrequente> GetAllPerguntaFrequente();
         PerguntaFrequente GetPerguntaFrequente(Guid id);
         void UpdatePerguntaFrequente(UpdatePerguntaFrequenteRequest request);
