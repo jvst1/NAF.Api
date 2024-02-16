@@ -26,5 +26,10 @@ namespace NAF.Application.Services
         {
             return _userService.GetUserByCodigo(id);
         }
+
+        public List<Usuario> GetAllUsuarioOperador()
+        {
+            return _userService.GetAllUsuarioOperador();
+        }
     }
 }

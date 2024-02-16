@@ -11,5 +11,6 @@ namespace NAF.Domain.Interface.Services
         Usuario? GetUserByCodigo(Guid codigoUsuario);
         Usuario? GetUserByEmail(string email);
         Usuario? GetUserByDocumentoFederal(string documentoFederal);
+        List<Usuario> GetAllUsuarioOperador();
     }
 }

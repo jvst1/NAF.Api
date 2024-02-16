@@ -44,5 +44,20 @@ namespace NAF.Api.Controllers
                 return Problem(ex.Message);
             }
         }
+
+        [Authorize(Roles = nameof(TipoPerfil.Professor))]
+        [HttpGet("Operador")]
+        public ActionResult GetAll()
+        {
+            try
+            {
+                var result = _userAppService.GetAllUsuarioOperador();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
     }
 }

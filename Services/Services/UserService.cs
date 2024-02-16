@@ -73,6 +73,14 @@ namespace NAF.Domain.Services.Services
             return _jwtService.BuildToken(entity.Codigo, entity.Email, entity.TipoPerfil.GetValueOrDefault());
         }
 
+        public List<Usuario> GetAllUsuarioOperador()
+        {
+            List<Usuario> operadores = _usuarioRepository.GetAll()
+                                     .Where(o => o.TipoPerfil.Equals(TipoPerfil.Aluno) || o.TipoPerfil.Equals(TipoPerfil.Professor))
+                                     .ToList();
+
+            return operadores;
+        }
         public Usuario? GetUserByCodigo(Guid codigoUsuario)
         {
             return _usuarioRepository.GetByCodigo(codigoUsuario);

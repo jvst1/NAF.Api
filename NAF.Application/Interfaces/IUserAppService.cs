@@ -9,5 +9,6 @@ namespace NAF.Application.Interfaces
     {
         Task<UserToken> CreateUser(CreateUserRequest request, TipoPerfil tipoPerfil);
         Usuario GetUserByCodigo(Guid id);
+        List<Usuario> GetAllUsuarioOperador();
     }
 }
