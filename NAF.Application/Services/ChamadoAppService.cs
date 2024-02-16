@@ -14,6 +14,7 @@ namespace NAF.Application.Services
     {
         private readonly IChamadoService _chamadoService;
         private readonly IUserAppService _userAppService;
+        private readonly IServicoAppService _servicoAppService;
         private readonly IChamadoRepository _chamadoRepository;
         private readonly IChamadoComentarioRepository _chamadoComentarioRepository;
         private readonly IChamadoDocumentoRepository _chamadoDocumentoRepository;
@@ -21,6 +22,7 @@ namespace NAF.Application.Services
 
         public ChamadoAppService(IChamadoService chamadoService,
                                  IUserAppService userAppService,
+                                 IServicoAppService servicoAppService,
                                  IChamadoRepository chamadoRepository,
                                  IChamadoComentarioRepository chamadoComentarioRepository,
                                  IChamadoDocumentoRepository chamadoDocumentoRepository,
@@ -28,6 +30,7 @@ namespace NAF.Application.Services
         {
             _chamadoService = chamadoService;
             _userAppService = userAppService;
+            _servicoAppService = servicoAppService;
             _chamadoRepository = chamadoRepository;
             _chamadoComentarioRepository = chamadoComentarioRepository;
             _chamadoDocumentoRepository = chamadoDocumentoRepository;
@@ -65,13 +68,53 @@ namespace NAF.Application.Services
         {
             var usuario = _userAppService.GetUserByCodigo(codigoUsuario);
 
-            return usuario.TipoPerfil switch
+            List<Chamado> chamados = usuario.TipoPerfil switch
             {
                 TipoPerfil.Comunidade => _chamadoRepository.GetAll().Where(o => o.CodigoUsuario.Equals(codigoUsuario)).ToList(),
                 TipoPerfil.Aluno => _chamadoRepository.GetAll().Where(o => o.CodigoOperador.Equals(codigoUsuario)).ToList(),
                 TipoPerfil.Professor => _chamadoRepository.GetAll().ToList(),
                 _ => throw new ArgumentOutOfRangeException("Tipo de perfil não cadastrado no sistema."),
             };
+
+            Dictionary<Guid, Usuario> chamadoUsuarios = new Dictionary<Guid, Usuario>();
+            Dictionary<Guid, Servico> chamadoServicos = new Dictionary<Guid, Servico>();
+            foreach (var chamado in chamados)
+            {
+                if (chamado.CodigoOperador.HasValue && chamado.CodigoOperador != Guid.Empty)
+                {
+                    if (chamadoUsuarios.ContainsKey(chamado.CodigoOperador.GetValueOrDefault()))
+                        chamado.Operador = chamadoUsuarios[chamado.CodigoOperador.GetValueOrDefault()];
+                    else
+                    {
+                        chamado.Operador = _userAppService.GetUserByCodigo(chamado.CodigoOperador.GetValueOrDefault());
+                        chamadoUsuarios.Add(chamado.CodigoOperador.GetValueOrDefault(), chamado.Operador);
+                    }
+                }
+
+                if (chamado.CodigoUsuario != Guid.Empty)
+                {
+                    if (chamadoUsuarios.ContainsKey(chamado.CodigoUsuario))
+                        chamado.Usuario = chamadoUsuarios[chamado.CodigoUsuario];
+                    else
+                    {
+                        chamado.Usuario = _userAppService.GetUserByCodigo(chamado.CodigoUsuario);
+                        chamadoUsuarios.Add(chamado.CodigoUsuario, chamado.Usuario);
+                    }
+                }
+
+                if (chamado.CodigoServico != Guid.Empty)
+                {
+                    if (chamadoServicos.ContainsKey(chamado.CodigoServico))
+                        chamado.Servico = chamadoServicos[chamado.CodigoServico];
+                    else
+                    {
+                        chamado.Servico = _servicoAppService.GetServico(chamado.CodigoServico);
+                        chamadoServicos.Add(chamado.CodigoServico, chamado.Servico);
+                    }
+                }
+            }
+
+            return chamados;
         }
 
         public Chamado GetChamado(Guid id)

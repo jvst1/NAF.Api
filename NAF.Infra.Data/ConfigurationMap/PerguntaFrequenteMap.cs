@@ -8,7 +8,7 @@ namespace NAF.Infra.Data.ConfigurationMap
     {
         public void Configure(EntityTypeBuilder<PerguntaFrequente> builder)
         {
-            builder.HasKey(pf => pf.Id);
+            builder.HasKey(pf => pf.Codigo);
 
             builder.Property(c => c.Id).ValueGeneratedOnAdd();
             builder.Property(c => c.Codigo).IsRequired();

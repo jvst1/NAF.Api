@@ -6,6 +6,6 @@ namespace NAF.Domain.Entities
     {
         public string? Pergunta { get; set; }
         public string? Resposta { get; set; }
-        public DateTime DtAlteracao { get; set; }
+        public DateTime? DtAlteracao { get; set; }
     }
 }

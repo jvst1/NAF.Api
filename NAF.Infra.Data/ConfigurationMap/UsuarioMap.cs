@@ -8,7 +8,7 @@ namespace NAF.Infra.Data.ConfigurationMap
     {
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
-            builder.HasKey(u => u.Id);
+            builder.HasKey(u => u.Codigo);
 
             builder.Property(u => u.Id).ValueGeneratedOnAdd();
             builder.Property(c => c.Codigo).IsRequired();
@@ -22,6 +22,7 @@ namespace NAF.Infra.Data.ConfigurationMap
             builder.Property(u => u.Situacao).IsRequired();
             builder.Property(u => u.IdentityUserId).IsRequired();
 
+            builder.HasIndex(u => u.DocumentoFederal).IsUnique();
             builder.HasIndex(u => u.Email).IsUnique();
         }
     }

@@ -8,7 +8,7 @@ namespace NAF.Infra.Data.ConfigurationMap
     {
         public void Configure(EntityTypeBuilder<ChamadoHistorico> builder)
         {
-            builder.HasKey(h => h.Id);
+            builder.HasKey(h => h.Codigo);
 
             builder.Property(c => c.Id).ValueGeneratedOnAdd();
             builder.Property(c => c.Codigo).IsRequired();
@@ -17,8 +17,21 @@ namespace NAF.Infra.Data.ConfigurationMap
             builder.Property(h => h.CampoAlterado).HasMaxLength(255).IsRequired(false);
             builder.Property(h => h.ValorAntigo).IsRequired(false);
             builder.Property(h => h.ValorNovo).IsRequired(false);
+
             builder.Property(h => h.CodigoUsuario).IsRequired();
             builder.Property(h => h.CodigoChamado).IsRequired();
+
+            builder.HasOne(c => c.Usuario)
+                   .WithMany()
+                   .HasForeignKey(c => c.CodigoUsuario)
+                   .IsRequired(false)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(c => c.Chamado)
+                   .WithMany()
+                   .HasForeignKey(c => c.CodigoChamado)
+                   .IsRequired(false)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
