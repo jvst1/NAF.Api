@@ -11,5 +11,9 @@ namespace NAF.Domain.Requests
         {
             File = file;
         }
+
+        public FileUploadRequest()
+        {
+        }
     }
 }
