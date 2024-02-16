@@ -20,9 +20,9 @@ namespace NAF.Api.Controllers
         {
             try
             {
-                _chamadoService.CreateChamado(request);
+                var response = _chamadoService.CreateChamado(request);
 
-                return Ok("Chamado criada com sucesso");
+                return Ok(response);
             }
             catch (Exception ex)
             {

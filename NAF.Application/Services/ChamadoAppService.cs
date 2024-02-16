@@ -34,7 +34,7 @@ namespace NAF.Application.Services
             _chamadoHistoricoRepository = chamadoHistoricoRepository;
         }
 
-        public void CreateChamado(CreateChamadoRequest request)
+        public Chamado CreateChamado(CreateChamadoRequest request)
         {
             var entity = new Chamado
             {
@@ -57,6 +57,8 @@ namespace NAF.Application.Services
             CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoCriado, entity.Codigo, entity.CodigoUsuario, "Chamado Entity", null, JsonConvert.SerializeObject(entity));
 
             ts.Complete();
+
+            return entity;
         }
 
         public List<Chamado> GetAllChamado(Guid codigoUsuario)
