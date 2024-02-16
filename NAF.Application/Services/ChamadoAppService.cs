@@ -226,6 +226,33 @@ namespace NAF.Application.Services
             if (documentos is null || documentos.Count == 0)
                 throw new Exception("Não foi encontrado documentos para esse chamado");
 
+            Dictionary<Guid, Chamado> chamados = new Dictionary<Guid, Chamado>();
+            Dictionary<Guid, Usuario> documentoUsuarios = new Dictionary<Guid, Usuario>();
+
+            foreach (var documento in documentos)
+            {
+                if (documento.CodigoUsuario != Guid.Empty)
+                {
+                    if (documentoUsuarios.ContainsKey(documento.CodigoUsuario))
+                        documento.Usuario = documentoUsuarios[documento.CodigoUsuario];
+                    else
+                    {
+                        documento.Usuario = _userAppService.GetUserByCodigo(documento.CodigoUsuario);
+                        documentoUsuarios.Add(documento.CodigoUsuario, documento.Usuario);
+                    }
+                }
+
+                if (documento.CodigoChamado != Guid.Empty)
+                {
+                    if (documentoUsuarios.ContainsKey(documento.CodigoChamado))
+                        documento.Chamado = chamados[documento.CodigoChamado];
+                    else
+                    {
+                        documento.Chamado = GetChamado(documento.CodigoChamado);
+                        chamados.Add(documento.CodigoChamado, documento.Chamado);
+                    }
+                }
+            }
             return documentos;
         }
 
@@ -236,6 +263,12 @@ namespace NAF.Application.Services
                 throw new Exception("O documento não foi encontrado");
             if (!documento.CodigoChamado.Equals(chamadoId))
                 throw new Exception("O documento solicitado não pertence ao chamado informado");
+
+            if (documento.CodigoUsuario != Guid.Empty)
+                documento.Usuario = _userAppService.GetUserByCodigo(documento.CodigoUsuario);
+
+            if (documento.CodigoChamado != Guid.Empty)
+                documento.Chamado = GetChamado(documento.CodigoChamado);
 
             return documento;
         }
@@ -282,8 +315,8 @@ namespace NAF.Application.Services
             if (comentarios is null || comentarios.Count == 0)
                 throw new Exception("Não foram encontrados comentários para esse chamado");
 
+            Dictionary<Guid, Chamado> chamados = new Dictionary<Guid, Chamado>();
             Dictionary<Guid, Usuario> comentarioUsuarios = new Dictionary<Guid, Usuario>();
-            Dictionary<Guid, Chamado> comentarioChamados = new Dictionary<Guid, Chamado>();
 
             foreach (var comentario in comentarios)
             {
@@ -300,12 +333,12 @@ namespace NAF.Application.Services
 
                 if (comentario.CodigoChamado != Guid.Empty)
                 {
-                    if (comentarioUsuarios.ContainsKey(comentario.CodigoUsuario))
-                        comentario.Chamado = comentarioChamados[comentario.CodigoChamado];
+                    if (comentarioUsuarios.ContainsKey(comentario.CodigoChamado))
+                        comentario.Chamado = chamados[comentario.CodigoChamado];
                     else
                     {
                         comentario.Chamado = GetChamado(comentario.CodigoChamado);
-                        comentarioChamados.Add(comentario.CodigoChamado, comentario.Chamado);
+                        chamados.Add(comentario.CodigoChamado, comentario.Chamado);
                     }
                 }
             }
@@ -320,6 +353,12 @@ namespace NAF.Application.Services
 
             if (!comentario.CodigoChamado.Equals(chamadoId))
                 throw new Exception("O comentario solicitado não pertence ao chamado informado");
+
+            if (comentario.CodigoUsuario != Guid.Empty)
+                comentario.Usuario = _userAppService.GetUserByCodigo(comentario.CodigoUsuario);
+
+            if (comentario.CodigoChamado != Guid.Empty)
+                comentario.Chamado = GetChamado(comentario.CodigoChamado);
 
             return comentario;
         }
@@ -360,11 +399,39 @@ namespace NAF.Application.Services
 
         public List<ChamadoHistorico> GetAllChamadoHistorico(Guid id)
         {
-            var historicoAcoes = _chamadoHistoricoRepository.GetAll().Where(o => o.CodigoChamado.Equals(id)).OrderByDescending(o => o.Id).ToList();
-            if (historicoAcoes is null || historicoAcoes.Count == 0)
+            var chamadoHistorico = _chamadoHistoricoRepository.GetAll().Where(o => o.CodigoChamado.Equals(id)).OrderByDescending(o => o.Id).ToList();
+            if (chamadoHistorico is null || chamadoHistorico.Count == 0)
                 throw new Exception("Não foram encontrados ações para esse chamado");
 
-            return historicoAcoes;
+            Dictionary<Guid, Chamado> chamados = new Dictionary<Guid, Chamado>();
+            Dictionary<Guid, Usuario> chamadoUsuarios = new Dictionary<Guid, Usuario>();
+
+            foreach (var item in chamadoHistorico)
+            {
+                if (item.CodigoUsuario != Guid.Empty)
+                {
+                    if (chamadoUsuarios.ContainsKey(item.CodigoUsuario))
+                        item.Usuario = chamadoUsuarios[item.CodigoUsuario];
+                    else
+                    {
+                        item.Usuario = _userAppService.GetUserByCodigo(item.CodigoUsuario);
+                        chamadoUsuarios.Add(item.CodigoUsuario, item.Usuario);
+                    }
+                }
+
+                if (item.CodigoChamado != Guid.Empty)
+                {
+                    if (chamados.ContainsKey(item.CodigoChamado))
+                        item.Chamado = chamados[item.CodigoChamado];
+                    else
+                    {
+                        item.Chamado = GetChamado(item.CodigoChamado);
+                        chamados.Add(item.CodigoChamado, item.Chamado);
+                    }
+                }
+            }
+
+            return chamadoHistorico;
         }
 
         private void CreateChamadoHistorico(TipoAlteracaoEnum tipoAlteracao, Guid codigoChamado, Guid codigoUsuario, string campoAlterado, string? valorAntigo, string? valorNovo)
