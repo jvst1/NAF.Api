@@ -124,6 +124,15 @@ namespace NAF.Application.Services
             if (chamado is null)
                 throw new KeyNotFoundException($"Chamado com o codigo {id} não foi encontrada.");
 
+            if (chamado.CodigoOperador.HasValue && chamado.CodigoOperador != Guid.Empty)
+                chamado.Operador = _userAppService.GetUserByCodigo(chamado.CodigoOperador.GetValueOrDefault());
+
+            if (chamado.CodigoUsuario != Guid.Empty)
+                chamado.Usuario = _userAppService.GetUserByCodigo(chamado.CodigoUsuario);
+
+            if (chamado.CodigoServico != Guid.Empty)
+                chamado.Servico = _servicoAppService.GetServico(chamado.CodigoServico);
+
             return chamado;
         }
 
@@ -273,6 +282,33 @@ namespace NAF.Application.Services
             if (comentarios is null || comentarios.Count == 0)
                 throw new Exception("Não foram encontrados comentários para esse chamado");
 
+            Dictionary<Guid, Usuario> comentarioUsuarios = new Dictionary<Guid, Usuario>();
+            Dictionary<Guid, Chamado> comentarioChamados = new Dictionary<Guid, Chamado>();
+
+            foreach (var comentario in comentarios)
+            {
+                if (comentario.CodigoUsuario != Guid.Empty)
+                {
+                    if (comentarioUsuarios.ContainsKey(comentario.CodigoUsuario))
+                        comentario.Usuario = comentarioUsuarios[comentario.CodigoUsuario];
+                    else
+                    {
+                        comentario.Usuario = _userAppService.GetUserByCodigo(comentario.CodigoUsuario);
+                        comentarioUsuarios.Add(comentario.CodigoUsuario, comentario.Usuario);
+                    }
+                }
+
+                if (comentario.CodigoChamado != Guid.Empty)
+                {
+                    if (comentarioUsuarios.ContainsKey(comentario.CodigoUsuario))
+                        comentario.Chamado = comentarioChamados[comentario.CodigoChamado];
+                    else
+                    {
+                        comentario.Chamado = GetChamado(comentario.CodigoChamado);
+                        comentarioChamados.Add(comentario.CodigoChamado, comentario.Chamado);
+                    }
+                }
+            }
             return comentarios;
         }
 
