@@ -11,8 +11,8 @@ using NAF.Infra.Data.Context;
 namespace NAF.Infra.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240204190730_EntitiesMigration")]
-    partial class EntitiesMigration
+    [Migration("20240218063452_Area DTAlteracao as nullable")]
+    partial class AreaDTAlteracaoasnullable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -215,14 +215,11 @@ namespace NAF.Infra.Data.Migrations
 
             modelBuilder.Entity("NAF.Domain.Entities.Area", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
                     b.Property<Guid>("Codigo")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DtInclusao")
@@ -233,18 +230,15 @@ namespace NAF.Infra.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Codigo");
 
                     b.ToTable("Area");
                 });
 
             modelBuilder.Entity("NAF.Domain.Entities.Chamado", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
                     b.Property<Guid>("Codigo")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
                     b.Property<Guid?>("CodigoOperador")
@@ -259,14 +253,11 @@ namespace NAF.Infra.Data.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DtInclusao")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<long?>("ServicoId")
-                        .HasColumnType("bigint");
 
                     b.Property<int>("Situacao")
                         .HasColumnType("int");
@@ -275,28 +266,21 @@ namespace NAF.Infra.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<long?>("UsuarioId")
-                        .HasColumnType("bigint");
+                    b.HasKey("Codigo");
 
-                    b.HasKey("Id");
+                    b.HasIndex("CodigoOperador");
 
-                    b.HasIndex("ServicoId");
+                    b.HasIndex("CodigoServico");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("CodigoUsuario");
 
                     b.ToTable("Chamado");
                 });
 
             modelBuilder.Entity("NAF.Domain.Entities.ChamadoComentario", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("ChamadoId")
-                        .HasColumnType("bigint");
-
                     b.Property<Guid>("Codigo")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
                     b.Property<Guid>("CodigoChamado")
@@ -305,7 +289,7 @@ namespace NAF.Infra.Data.Migrations
                     b.Property<Guid>("CodigoUsuario")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DtInclusao")
@@ -314,32 +298,23 @@ namespace NAF.Infra.Data.Migrations
                     b.Property<string>("Mensagem")
                         .HasColumnType("longtext");
 
-                    b.Property<long?>("UsuarioId")
-                        .HasColumnType("bigint");
+                    b.HasKey("Codigo");
 
-                    b.HasKey("Id");
+                    b.HasIndex("CodigoChamado");
 
-                    b.HasIndex("ChamadoId");
-
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("CodigoUsuario");
 
                     b.ToTable("ChamadoComentario");
                 });
 
             modelBuilder.Entity("NAF.Domain.Entities.ChamadoDocumento", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Codigo")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("char(36)");
 
                     b.Property<byte[]>("Arquivo")
                         .HasColumnType("longblob");
-
-                    b.Property<long?>("ChamadoId")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("Codigo")
-                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("CodigoChamado")
                         .HasColumnType("char(36)");
@@ -354,33 +329,24 @@ namespace NAF.Infra.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<long?>("UsuarioId")
-                        .HasColumnType("bigint");
+                    b.HasKey("Codigo");
 
-                    b.HasKey("Id");
+                    b.HasIndex("CodigoChamado");
 
-                    b.HasIndex("ChamadoId");
-
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("CodigoUsuario");
 
                     b.ToTable("ChamadoDocumento");
                 });
 
             modelBuilder.Entity("NAF.Domain.Entities.ChamadoHistorico", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Codigo")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("CampoAlterado")
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
-
-                    b.Property<long?>("ChamadoId")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("Codigo")
-                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("CodigoChamado")
                         .HasColumnType("char(36)");
@@ -394,34 +360,28 @@ namespace NAF.Infra.Data.Migrations
                     b.Property<int>("TipoAlteracao")
                         .HasColumnType("int");
 
-                    b.Property<long?>("UsuarioId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("ValorAntigo")
                         .HasColumnType("longtext");
 
                     b.Property<string>("ValorNovo")
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.HasKey("Codigo");
 
-                    b.HasIndex("ChamadoId");
+                    b.HasIndex("CodigoChamado");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("CodigoUsuario");
 
                     b.ToTable("ChamadoHistorico");
                 });
 
             modelBuilder.Entity("NAF.Domain.Entities.PerguntaFrequente", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
                     b.Property<Guid>("Codigo")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DtInclusao")
@@ -435,7 +395,7 @@ namespace NAF.Infra.Data.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("varchar(2000)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Codigo");
 
                     b.HasIndex("DtAlteracao");
 
@@ -444,14 +404,8 @@ namespace NAF.Infra.Data.Migrations
 
             modelBuilder.Entity("NAF.Domain.Entities.Servico", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("AreaId")
-                        .HasColumnType("bigint");
-
                     b.Property<Guid>("Codigo")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
                     b.Property<Guid>("CodigoArea")
@@ -460,7 +414,7 @@ namespace NAF.Infra.Data.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("DtAlteracao")
+                    b.Property<DateTime?>("DtAlteracao")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DtInclusao")
@@ -471,20 +425,17 @@ namespace NAF.Infra.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Codigo");
 
-                    b.HasIndex("AreaId");
+                    b.HasIndex("CodigoArea");
 
                     b.ToTable("Servico");
                 });
 
             modelBuilder.Entity("NAF.Domain.Entities.Usuario", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
                     b.Property<Guid>("Codigo")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
                     b.Property<string>("DocumentoFederal")
@@ -520,7 +471,10 @@ namespace NAF.Infra.Data.Migrations
                     b.Property<int>("TipoPerfil")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("Codigo");
+
+                    b.HasIndex("DocumentoFederal")
+                        .IsUnique();
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -583,13 +537,22 @@ namespace NAF.Infra.Data.Migrations
 
             modelBuilder.Entity("NAF.Domain.Entities.Chamado", b =>
                 {
+                    b.HasOne("NAF.Domain.Entities.Usuario", "Operador")
+                        .WithMany()
+                        .HasForeignKey("CodigoOperador")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("NAF.Domain.Entities.Servico", "Servico")
                         .WithMany()
-                        .HasForeignKey("ServicoId");
+                        .HasForeignKey("CodigoServico")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("NAF.Domain.Entities.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("CodigoUsuario")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Operador");
 
                     b.Navigation("Servico");
 
@@ -600,11 +563,13 @@ namespace NAF.Infra.Data.Migrations
                 {
                     b.HasOne("NAF.Domain.Entities.Chamado", "Chamado")
                         .WithMany()
-                        .HasForeignKey("ChamadoId");
+                        .HasForeignKey("CodigoChamado")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("NAF.Domain.Entities.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("CodigoUsuario")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Chamado");
 
@@ -615,11 +580,13 @@ namespace NAF.Infra.Data.Migrations
                 {
                     b.HasOne("NAF.Domain.Entities.Chamado", "Chamado")
                         .WithMany()
-                        .HasForeignKey("ChamadoId");
+                        .HasForeignKey("CodigoChamado")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("NAF.Domain.Entities.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("CodigoUsuario")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Chamado");
 
@@ -630,11 +597,13 @@ namespace NAF.Infra.Data.Migrations
                 {
                     b.HasOne("NAF.Domain.Entities.Chamado", "Chamado")
                         .WithMany()
-                        .HasForeignKey("ChamadoId");
+                        .HasForeignKey("CodigoChamado")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("NAF.Domain.Entities.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("CodigoUsuario")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Chamado");
 
@@ -645,7 +614,8 @@ namespace NAF.Infra.Data.Migrations
                 {
                     b.HasOne("NAF.Domain.Entities.Area", "Area")
                         .WithMany()
-                        .HasForeignKey("AreaId");
+                        .HasForeignKey("CodigoArea")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Area");
                 });

@@ -315,8 +315,8 @@ namespace NAF.Application.Services
 
         public List<ChamadoComentario> GetAllChamadoComentario(Guid chamadoId)
         {
-            var comentarios = _chamadoComentarioRepository.GetAll().Where(o => o.CodigoChamado.Equals(chamadoId)).OrderByDescending(o => o.Id).ToList();
-            if (comentarios is null || comentarios.Count == 0)
+            var comentarios = _chamadoComentarioRepository.GetAll().Where(o => o.CodigoChamado.Equals(chamadoId)).ToList();
+            if (comentarios is null || !comentarios.Any())
                 throw new Exception("Não foram encontrados comentários para esse chamado");
 
             Dictionary<Guid, Chamado> chamados = new Dictionary<Guid, Chamado>();
@@ -403,8 +403,8 @@ namespace NAF.Application.Services
 
         public List<ChamadoHistorico> GetAllChamadoHistorico(Guid id)
         {
-            var chamadoHistorico = _chamadoHistoricoRepository.GetAll().Where(o => o.CodigoChamado.Equals(id)).OrderByDescending(o => o.Id).ToList();
-            if (chamadoHistorico is null || chamadoHistorico.Count == 0)
+            var chamadoHistorico = _chamadoHistoricoRepository.GetAll().Where(o => o.CodigoChamado.Equals(id)).ToList();
+            if (chamadoHistorico is null || !chamadoHistorico.Any())
                 throw new Exception("Não foram encontrados ações para esse chamado");
 
             Dictionary<Guid, Chamado> chamados = new Dictionary<Guid, Chamado>();

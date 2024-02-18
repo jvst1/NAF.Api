@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NAF.Infra.Data.Context;
 
@@ -10,9 +11,10 @@ using NAF.Infra.Data.Context;
 namespace NAF.Infra.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240218062849_DtAlteracao Adjust Nullable")]
+    partial class DtAlteracaoAdjustNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -218,6 +220,7 @@ namespace NAF.Infra.Data.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("DtAlteracao")
+                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DtInclusao")
