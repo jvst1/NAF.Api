@@ -54,6 +54,19 @@ namespace NAF.Application.Services
 
             using var ts = new TransactionScope();
 
+            if (request.Arquivos != null && request.Arquivos?.Count > 0)
+            {
+                foreach (var arquivo in request.Arquivos)
+                {
+                    var chamadoDocumentoRequest = new FileUploadRequest
+                    {
+                        CodigoUsuario = request.CodigoUsuario,
+                        File = arquivo
+                    };
+                    CreateChamadoDocumento(chamadoDocumentoRequest, entity.Codigo);
+                }
+            }
+
             _chamadoRepository.Insert(entity);
             _chamadoRepository.SaveChanges();
 
