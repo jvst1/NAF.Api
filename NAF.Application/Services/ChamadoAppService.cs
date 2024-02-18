@@ -5,6 +5,7 @@ using NAF.Domain.Interface.Repositories;
 using NAF.Domain.Interface.Services;
 using NAF.Domain.Requests;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Transactions;
 
@@ -156,6 +157,9 @@ namespace NAF.Application.Services
 
             entity.Titulo = request.Titulo;
             entity.Descricao = request.Descricao;
+
+            if (request.CodigoOperador != null)
+                entity.CodigoOperador = request.CodigoOperador;
 
             _chamadoService.ValidateChamado(entity);
 
