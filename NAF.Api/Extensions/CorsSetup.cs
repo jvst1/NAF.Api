@@ -2,16 +2,13 @@
 {
     public static class CorsSetup
     {
-        private static readonly string CorsOrigins = "https://naf-web.vercel.app";
-
-        public static void ConfigureCors(this IServiceCollection services, string origins)
+        public static void ConfigureCors(this IServiceCollection services, IConfiguration configuration, string origins)
         {
             services.AddCors(options =>
             {
                 options.AddPolicy(name: origins, policy =>
                 {
-                    policy.WithOrigins(CorsOrigins)
-                          .AllowAnyOrigin()
+                    policy.WithOrigins(configuration.GetSection("AppSettings:WebUrl").Value)
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                 });
