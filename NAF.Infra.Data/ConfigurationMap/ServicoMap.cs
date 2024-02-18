@@ -15,6 +15,7 @@ namespace NAF.Infra.Data.ConfigurationMap
             builder.Property(s => s.Nome).HasMaxLength(255).IsRequired();
             builder.Property(s => s.Descricao).IsRequired(false);
             builder.Property(s => s.DtAlteracao);
+            builder.Property(s => s.HoraComplementar).IsRequired();
 
             builder.Property(s => s.CodigoArea).IsRequired();
 

@@ -467,5 +467,29 @@ namespace NAF.Application.Services
             _chamadoHistoricoRepository.Insert(entity);
             _chamadoHistoricoRepository.SaveChanges();
         }
+
+        public List<dynamic> GetAllChamadoOperador(Guid operadorId)
+        {
+            var chamados = _chamadoRepository.GetAll().Where(x => x.CodigoOperador == operadorId).ToList();
+
+            var listResponse = new List<dynamic>();
+
+            foreach (var chamado in chamados)
+            {
+                var servico = _servicoAppService.GetServico(chamado.CodigoServico);
+                var usuario = _userAppService.GetUserByCodigo(chamado.CodigoUsuario);
+
+                listResponse.Add(
+                    new
+                    {
+                        CodigoChamado = chamado.Codigo,
+                        chamado.Titulo,
+                        servico.HoraComplementar,
+                        NomeUsuario = usuario.Nome
+                    });
+            }
+
+            return listResponse;
+        }
     }
 }

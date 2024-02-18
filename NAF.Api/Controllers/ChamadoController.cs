@@ -261,6 +261,21 @@ namespace NAF.Api.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet("Operador/{id}")]
+        public ActionResult GetAllChamadoOperador([FromRoute] Guid id)
+        {
+            try
+            {
+                var chamados = _chamadoService.GetAllChamadoOperador(id);
+                return Ok(chamados);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         private string GetContentType(string fileExtension)
         {
             return fileExtension.ToLower() switch

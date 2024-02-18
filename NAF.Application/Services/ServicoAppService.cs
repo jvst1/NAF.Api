@@ -27,6 +27,7 @@ namespace NAF.Application.Services
                 CodigoArea = request.CodigoArea,
                 Nome = request.Nome,
                 Descricao = request.Descricao,
+                HoraComplementar = request.HoraComplementar,
                 DtInclusao = DateTime.Now
             };
 
