@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NAF.Infra.Data.Context;
 
@@ -10,9 +11,10 @@ using NAF.Infra.Data.Context;
 namespace NAF.Infra.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240218062849_DtAlteracao Adjust Nullable")]
+    partial class DtAlteracaoAdjustNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -218,6 +220,7 @@ namespace NAF.Infra.Data.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("DtAlteracao")
+                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DtInclusao")
@@ -230,7 +233,7 @@ namespace NAF.Infra.Data.Migrations
 
                     b.HasKey("Codigo");
 
-                    b.ToTable("Area", (string)null);
+                    b.ToTable("Area");
                 });
 
             modelBuilder.Entity("NAF.Domain.Entities.Chamado", b =>
@@ -272,7 +275,7 @@ namespace NAF.Infra.Data.Migrations
 
                     b.HasIndex("CodigoUsuario");
 
-                    b.ToTable("Chamado", (string)null);
+                    b.ToTable("Chamado");
                 });
 
             modelBuilder.Entity("NAF.Domain.Entities.ChamadoComentario", b =>
@@ -302,7 +305,7 @@ namespace NAF.Infra.Data.Migrations
 
                     b.HasIndex("CodigoUsuario");
 
-                    b.ToTable("ChamadoComentario", (string)null);
+                    b.ToTable("ChamadoComentario");
                 });
 
             modelBuilder.Entity("NAF.Domain.Entities.ChamadoDocumento", b =>
@@ -333,7 +336,7 @@ namespace NAF.Infra.Data.Migrations
 
                     b.HasIndex("CodigoUsuario");
 
-                    b.ToTable("ChamadoDocumento", (string)null);
+                    b.ToTable("ChamadoDocumento");
                 });
 
             modelBuilder.Entity("NAF.Domain.Entities.ChamadoHistorico", b =>
@@ -370,7 +373,7 @@ namespace NAF.Infra.Data.Migrations
 
                     b.HasIndex("CodigoUsuario");
 
-                    b.ToTable("ChamadoHistorico", (string)null);
+                    b.ToTable("ChamadoHistorico");
                 });
 
             modelBuilder.Entity("NAF.Domain.Entities.PerguntaFrequente", b =>
@@ -397,7 +400,7 @@ namespace NAF.Infra.Data.Migrations
 
                     b.HasIndex("DtAlteracao");
 
-                    b.ToTable("PerguntaFrequente", (string)null);
+                    b.ToTable("PerguntaFrequente");
                 });
 
             modelBuilder.Entity("NAF.Domain.Entities.Servico", b =>
@@ -418,9 +421,6 @@ namespace NAF.Infra.Data.Migrations
                     b.Property<DateTime>("DtInclusao")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("HoraComplementar")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -430,7 +430,7 @@ namespace NAF.Infra.Data.Migrations
 
                     b.HasIndex("CodigoArea");
 
-                    b.ToTable("Servico", (string)null);
+                    b.ToTable("Servico");
                 });
 
             modelBuilder.Entity("NAF.Domain.Entities.Usuario", b =>
@@ -482,7 +482,7 @@ namespace NAF.Infra.Data.Migrations
 
                     b.HasIndex("IdentityUserId");
 
-                    b.ToTable("Usuario", (string)null);
+                    b.ToTable("Usuario");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

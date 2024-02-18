@@ -21,5 +21,6 @@ namespace NAF.Application.Interfaces
         void UpdateChamadoComentario(Guid chamadoId, Guid comentarioId, UpdateChamadoComentarioRequest request);
         void DeleteChamadoComentario(Guid chamadoId, Guid comentarioId, Guid codigoUsuario);
         List<ChamadoHistorico> GetAllChamadoHistorico(Guid id);
+        List<dynamic> GetAllChamadoOperador(Guid operadorId);
     }
 }

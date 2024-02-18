@@ -22,6 +22,9 @@ namespace NAF.Domain.Services.Services
 
             if (servico.CodigoArea.Equals(Guid.Empty))
                 throw new ArgumentException("Uma area deve ser selecionada. O preenchimento do campo é obrigatório.");
+
+            if (servico.HoraComplementar < 0)
+                throw new ArgumentException("Hora Complementar deve ser informada. O preenchimento do campo é obrigatório");
         }
     }
 }

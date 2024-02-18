@@ -28,7 +28,7 @@ namespace NAF.Infra.Data.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            var connectionString = Configuration.GetConnectionString("NAF");
+            var connectionString = "Data Source=127.0.0.1;Initial Catalog=naf-db;Persist Security Info=True;User ID=root;Password=!MyStrongPassword;AllowUserVariables=True;Application Name=naf-api";
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
 

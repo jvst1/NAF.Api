@@ -168,6 +168,28 @@ namespace NAF.Api.Controllers
             }
         }
 
+        [HttpPost("{chamadoId}/Documento/{documentoId}/Download")]
+        public ActionResult DownloadChamadoDocumento([FromRoute] Guid chamadoId, [FromRoute] Guid documentoId)
+        {
+            try
+            {
+                var chamadoDocumento = _chamadoService.GetChamadoDocumento(chamadoId, documentoId);
+
+                if (chamadoDocumento == null)
+                    throw new KeyNotFoundException("O documento solicitado não foi encontrado na base de dados");
+
+                var filename = Path.GetFileNameWithoutExtension(chamadoDocumento.NomeArquivo);
+                var ext = Path.GetExtension(chamadoDocumento.NomeArquivo!).Replace(".", string.Empty);
+                var contentType = GetContentType(ext);
+
+                return File(chamadoDocumento.Arquivo!, contentType, chamadoDocumento.NomeArquivo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("{id}/Comentario")]
         public ActionResult CreateChamadoComentario([FromBody] CreateChamadoComentarioRequest request, [FromRoute] Guid id)
         {
@@ -238,5 +260,44 @@ namespace NAF.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet("Operador/{id}")]
+        public ActionResult GetAllChamadoOperador([FromRoute] Guid id)
+        {
+            try
+            {
+                var chamados = _chamadoService.GetAllChamadoOperador(id);
+                return Ok(chamados);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        private string GetContentType(string fileExtension)
+        {
+            return fileExtension.ToLower() switch
+            {
+                "txt" => "text/plain",
+                "rem" => "text/plain",
+                "bmp" => "image/bmp",
+                "jpg" => "image/jpeg",
+                "jpeg" => "image/jpeg",
+                "gif" => "image/gif",
+                "png" => "image/png",
+                "pdf" => "application/pdf",
+                "doc" => "application/msword",
+                "docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "xls" => "application/msexcel",
+                "xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "zip" => "application/zip",
+                "xml" => "text/xml",
+                "json" => "application/json",
+                _ => "application/octet-stream",
+            };
+        }
+
     }
 }

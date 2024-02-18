@@ -23,10 +23,7 @@ namespace NAF.Infra.Data.Repository.Base
                      .AsNoTracking()
                      .FirstOrDefault(x => x.Codigo == codigo);
         }
-        public TEntity? GetById(long id)
-        {
-            return Db.Set<TEntity>().AsNoTracking().FirstOrDefault(x => x.Id == id);
-        }
+        
         public int Count()
         {
             return Db.Set<TEntity>().Count();

@@ -10,11 +10,10 @@ namespace NAF.Infra.Data.ConfigurationMap
         {
             builder.HasKey(a => a.Codigo);
 
-            builder.Property(c => c.Id).ValueGeneratedOnAdd();
             builder.Property(c => c.Codigo).IsRequired();
             builder.Property(c => c.DtInclusao).IsRequired();
             builder.Property(a => a.Nome).IsRequired().HasMaxLength(255);
-            builder.Property(a => a.DtAlteracao).IsRequired();
+            builder.Property(a => a.DtAlteracao);
         }
     }
 
