@@ -1,9 +1,16 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace NAF.Domain.Base
 {
     public static class Util
     {
+        private const string SenhaCaracteresValidos = LetrasMaiusculas + LetrasMinusculas + Numeros + Especiais;
+        private const string LetrasMaiusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private const string LetrasMinusculas = "abcdefghijklmnopqrstuvwxyz";
+        private const string Numeros = "1234567890";
+        private const string Especiais = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+
         public static string DeixaNumeros(string texto)
         {
             return string.IsNullOrWhiteSpace(texto) ? string.Empty : string.Join("", Regex.Split(texto, @"[^\d]"));
@@ -93,5 +100,79 @@ namespace NAF.Domain.Base
             return cpf.EndsWith(digito);
         }
 
+        public static bool ValidaSenha(string senha)
+        {
+            if (string.IsNullOrWhiteSpace(senha))
+                throw new InvalidDataException("Senha deve conter letras e números e pelo menos 8 caracteres");
+
+            var temLetra = false;
+            var temNumero = false;
+            var temUpper = false;
+            var temLower = false;
+            var temEspecial = false;
+
+            foreach (var c in senha)
+            {
+                if (char.IsLetter(c))
+                    temLetra = true;
+                if (char.IsNumber(c))
+                    temNumero = true;
+                if (char.IsUpper(c))
+                    temUpper = true;
+                if (char.IsLower(c))
+                    temLower = true;
+                if (Especiais.Contains(c))
+                    temEspecial = true;
+            }
+
+            if (!(temNumero && temLetra && temUpper && temLower && temEspecial) || senha.Length < 8)
+                throw new InvalidDataException("Senha deve conter letras maiusculas e minusculas, números, caracteres especiais e pelo menos 8 caracteres");
+
+            if (senha.Contains(" "))
+                throw new InvalidDataException("A senha não pode conter espaços");
+
+            return true;
+        }
+
+        public static string CriarSenha()
+        {
+            var tamanho = 16;
+            var valormaximo = SenhaCaracteresValidos.Length - 1;
+
+            var random = new Random(DateTime.Now.Millisecond);
+            var senhaBuilder = new StringBuilder(tamanho);
+
+            for (var i = 0; i < tamanho; i++)
+                senhaBuilder.Append(SenhaCaracteresValidos[random.Next(0, valormaximo)]);
+
+            var senha = senhaBuilder.ToString();
+
+            if (!senha.Any(char.IsDigit))
+            {
+                var posNum = random.Next(0, Numeros.Length - 1);
+                var posSenha = random.Next(0, senha.Length - 1);
+                senhaBuilder[posSenha] = Numeros[posNum];
+            }
+            if (!senha.Any(c => char.IsLetter(c) && char.IsUpper(c)))
+            {
+                var posCaracter = random.Next(0, LetrasMaiusculas.Length - 1);
+                var posSenha = random.Next(0, senha.Length - 1);
+                senhaBuilder[posSenha] = LetrasMaiusculas[posCaracter];
+            }
+            if (!senha.Any(c => char.IsLetter(c) && char.IsLower(c)))
+            {
+                var posCaracter = random.Next(0, LetrasMinusculas.Length - 1);
+                var posSenha = random.Next(0, senha.Length - 1);
+                senhaBuilder[posSenha] = LetrasMinusculas[posCaracter];
+            }
+            if (!senha.Any(c => Especiais.Contains(c)))
+            {
+                var posCaracter = random.Next(0, Especiais.Length - 1);
+                var posSenha = random.Next(0, senha.Length - 1);
+                senhaBuilder[posSenha] = Especiais[posCaracter];
+            }
+
+            return senhaBuilder.ToString();
+        }
     }
 }

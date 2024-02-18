@@ -21,13 +21,15 @@ namespace NAF.Domain.Services.Services
             _appSettings = options.Value;
         }
 
-        public UserToken BuildToken(Guid codigoUsuario, string email, TipoPerfil tipoPerfil)
+        public UserToken BuildToken(Guid codigoUsuario, string email, TipoPerfil tipoPerfil, bool primeiroLogin = false)
         {
             var roles = GetRoles(tipoPerfil);
             var claims = new List<Claim>()
             {
                 new Claim(JwtRegisteredClaimNames.NameId, codigoUsuario.ToString()),
                 new Claim(JwtRegisteredClaimNames.Name, email),
+                new Claim("PrimeiroLogin", primeiroLogin.ToString())
+
             };
 
             claims.AddRange(roles.Select(s => new Claim(ClaimsIdentity.DefaultRoleClaimType, s)));
