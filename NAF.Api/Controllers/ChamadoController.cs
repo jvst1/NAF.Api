@@ -191,7 +191,7 @@ namespace NAF.Api.Controllers
         }
 
         [HttpPost("{id}/Comentario")]
-        public ActionResult CreateChamadoComentario([FromForm] CreateChamadoComentarioRequest request, [FromRoute] Guid id)
+        public ActionResult CreateChamadoComentario([FromBody] CreateChamadoComentarioRequest request, [FromRoute] Guid id)
         {
             try
             {

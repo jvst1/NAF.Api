@@ -59,5 +59,35 @@ namespace NAF.Api.Controllers
                 return Problem(ex.Message);
             }
         }
+
+        [AllowAnonymous]
+        [HttpPost("RecuperarSenha")]
+        public ActionResult RecuperarSenha([FromBody] RecuperarSenhaRequest request)
+        {
+            try
+            {
+                _userAppService.RecuperarSenha(request);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("SolicitarLinkSenha")]
+        public ActionResult SolicitarLinkSenha([FromBody] SolicitarLinkSenhaRequest request)
+        {
+            try
+            {
+                _userAppService.SolicitarLinkSenha(request);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
     }
 }

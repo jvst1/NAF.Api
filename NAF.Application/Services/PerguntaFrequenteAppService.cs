@@ -69,6 +69,7 @@ namespace NAF.Application.Services
         {
             var entity = GetPerguntaFrequente(id);
             _perguntaFrequenteRepository.Remove(entity);
+            _perguntaFrequenteRepository.SaveChanges();
         }
     }
 }

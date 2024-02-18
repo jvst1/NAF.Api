@@ -21,6 +21,7 @@ namespace NAF.Infra.Data.Context
         public DbSet<PerguntaFrequente> PerguntaFrequente { get; set; }
         public DbSet<Servico> Servico { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<EnvioEmail> EnvioEmail { get; set; }
 
         #endregion
 
@@ -44,6 +45,7 @@ namespace NAF.Infra.Data.Context
             builder.ApplyConfiguration(new PerguntaFrequenteMap());
             builder.ApplyConfiguration(new ServicoMap());
             builder.ApplyConfiguration(new UsuarioMap());
+            builder.ApplyConfiguration(new EnvioEmailMap());
         }
     }
 }
