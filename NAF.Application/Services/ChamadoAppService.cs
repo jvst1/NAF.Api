@@ -157,9 +157,7 @@ namespace NAF.Application.Services
 
             entity.Titulo = request.Titulo;
             entity.Descricao = request.Descricao;
-
-            if (request.CodigoOperador != null)
-                entity.CodigoOperador = request.CodigoOperador;
+            entity.CodigoOperador = request.CodigoOperador;
 
             _chamadoService.ValidateChamado(entity);
 
