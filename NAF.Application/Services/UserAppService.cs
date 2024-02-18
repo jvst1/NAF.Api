@@ -22,6 +22,16 @@ namespace NAF.Application.Services
             return await _userService.CreateUser(request, tipoPerfil);
         }
 
+        public void RecuperarSenha(RecuperarSenhaRequest request)
+        {
+            _userService.RecuperarSenha(request);
+        }
+
+        public void SolicitarLinkSenha(SolicitarLinkSenhaRequest request)
+        {
+            _userService.SolicitarLinkSenha(request);
+        }
+
         public Usuario GetUserByCodigo(Guid id)
         {
             return _userService.GetUserByCodigo(id);

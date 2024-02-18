@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using NAF.Domain.Enum;
 using NAF.Domain.Interface.Services;
@@ -52,6 +52,24 @@ namespace NAF.Domain.Services.Services
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration
             };
+        }
+
+        public JwtSecurityToken ValidateToken(string jwtToken)
+        {
+
+            IdentityModelEventSource.ShowPII = true;
+
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidAudience = _appSettings.JWT!.Audience!,
+                ValidIssuer = _appSettings.JWT!.Issuer!,
+                IssuerSigningKey =
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT!.Key!))
+            };
+
+            new JwtSecurityTokenHandler().ValidateToken(jwtToken, validationParameters, out var validatedToken);
+
+            return validatedToken as JwtSecurityToken;
         }
 
         private IEnumerable<string> GetRoles<T>(T source) where T : System.Enum

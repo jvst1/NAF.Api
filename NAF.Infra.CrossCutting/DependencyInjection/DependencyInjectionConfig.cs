@@ -43,6 +43,7 @@ namespace NAF.Infra.CrossCutting.DependencyInjection
             services.AddTransient<IServicoAppService, ServicoAppService>();
             services.AddTransient<IPerguntaFrequenteAppService, PerguntaFrequenteAppService>();
             services.AddTransient<IChamadoAppService, ChamadoAppService>();
+            services.AddTransient<IEnvioEmailAppService, EnvioEmailAppService>();
 
             #endregion
         }
@@ -61,6 +62,7 @@ namespace NAF.Infra.CrossCutting.DependencyInjection
             services.AddTransient<IChamadoDocumentoRepository, ChamadoDocumentoRepository>();
             services.AddTransient<IChamadoHistoricoRepository, ChamadoHistoricoRepository>();
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();
+            services.AddTransient<IEnvioEmailRepository, EnvioEmailRepository>();
 
             #endregion
 
@@ -88,6 +90,7 @@ namespace NAF.Infra.CrossCutting.DependencyInjection
             services.AddTransient<IServicoService, ServicoService>();
             services.AddTransient<IPerguntaFrequenteService, PerguntaFrequenteService>();
             services.AddTransient<IChamadoService, ChamadoService>();
+            services.AddTransient<IEnvioEmailService, EnvioEmailService>();
 
             #endregion
         }

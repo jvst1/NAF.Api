@@ -29,7 +29,7 @@ internal class Program
         builder.Services.ConfigureIdentity();
         builder.Services.AddDependencyInjection();
         builder.Services.ConfigureAuthentication(builder.Configuration);
-        builder.Services.ConfigureCors(allowOrigins);
+        builder.Services.ConfigureCors(builder.Configuration, allowOrigins);
 
         var app = builder.Build();
 
