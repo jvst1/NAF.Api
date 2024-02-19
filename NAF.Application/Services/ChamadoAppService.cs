@@ -469,7 +469,7 @@ namespace NAF.Application.Services
 
         public List<dynamic> GetAllChamadoOperador(Guid operadorId)
         {
-            var chamados = _chamadoRepository.GetAll().Where(x => x.CodigoOperador == operadorId).ToList();
+            var chamados = _chamadoRepository.GetAll().Where(x => x.CodigoOperador == operadorId).ToList().OrderByDescending(x => x.DtInclusao);
 
             var listResponse = new List<dynamic>();
 

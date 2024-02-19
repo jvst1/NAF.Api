@@ -261,7 +261,6 @@ namespace NAF.Api.Controllers
             }
         }
 
-        [AllowAnonymous]
         [HttpGet("Operador/{id}")]
         public ActionResult GetAllChamadoOperador([FromRoute] Guid id)
         {
