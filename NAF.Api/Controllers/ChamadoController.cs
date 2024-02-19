@@ -66,10 +66,9 @@ namespace NAF.Api.Controllers
         {
             try
             {
-                if (!id.Equals(request.Codigo))
-                    return BadRequest("O código informado não é o mesmo");
+                var operador = GetUsuarioLogado();
 
-                _chamadoService.UpdateChamado(request);
+                _chamadoService.UpdateChamado(request, operador.Codigo, id);
                 return Ok("Chamado atualizado com sucesso");
             }
             catch (Exception ex)
@@ -155,11 +154,13 @@ namespace NAF.Api.Controllers
         }
 
         [HttpDelete("{chamadoId}/Documento/{documentoId}")]
-        public ActionResult DeleteChamadoDocumento([FromRoute] Guid chamadoId, [FromRoute] Guid documentoId, Guid codigoUsuario)
+        public ActionResult DeleteChamadoDocumento([FromRoute] Guid chamadoId, [FromRoute] Guid documentoId)
         {
             try
             {
-                _chamadoService.DeleteChamadoDocumento(chamadoId, documentoId, codigoUsuario);
+                var usuario = GetUsuarioLogado();
+
+                _chamadoService.DeleteChamadoDocumento(chamadoId, documentoId, usuario.Codigo);
                 return Ok("O documento foi apagado com sucesso");
             }
             catch (Exception ex)

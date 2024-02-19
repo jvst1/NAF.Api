@@ -8,7 +8,7 @@ namespace NAF.Application.Interfaces
         Chamado CreateChamado(CreateChamadoRequest request);
         List<Chamado> GetAllChamado(Guid codigoUsuario);
         Chamado GetChamado(Guid id);
-        void UpdateChamado(UpdateChamadoRequest request);
+        void UpdateChamado(UpdateChamadoRequest request, Guid codigoOperador, Guid id);
         void UpdateChamadoSituacao(UpdateChamadoSituacaoRequest request);
         void DeleteChamado(Guid id, Guid codigoUsuario);
         ChamadoDocumento CreateChamadoDocumento(FileUploadRequest request, Guid id);

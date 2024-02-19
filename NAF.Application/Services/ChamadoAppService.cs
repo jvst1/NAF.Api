@@ -150,13 +150,10 @@ namespace NAF.Application.Services
             return chamado;
         }
 
-        public void UpdateChamado(UpdateChamadoRequest request)
+        public void UpdateChamado(UpdateChamadoRequest request, Guid codigoOperador, Guid id)
         {
-            Chamado entity = GetChamado(request.Codigo);
+            Chamado entity = GetChamado(id);
             Chamado chamado = entity;
-
-            entity.Titulo = request.Titulo;
-            entity.Descricao = request.Descricao;
 
             if (request.CodigoOperador != null)
                 entity.CodigoOperador = request.CodigoOperador;
@@ -170,7 +167,7 @@ namespace NAF.Application.Services
             _chamadoRepository.Update(entity);
             _chamadoRepository.SaveChanges();
 
-            CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoAlterado, request.Codigo, request.CodigoUsuario, "Chamado Entity", JsonConvert.SerializeObject(chamado), JsonConvert.SerializeObject(entity));
+            CreateChamadoHistorico(TipoAlteracaoEnum.ChamadoAlterado, id, codigoOperador, "Chamado Entity", JsonConvert.SerializeObject(chamado), JsonConvert.SerializeObject(entity));
 
             ts.Complete();
         }
