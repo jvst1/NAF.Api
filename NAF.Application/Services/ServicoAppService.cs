@@ -65,6 +65,7 @@ namespace NAF.Application.Services
             entity.CodigoArea = request.CodigoArea;
             entity.Nome = request.Nome;
             entity.Descricao = request.Descricao;
+            entity.HoraComplementar = request.HoraComplementar;
             
             _servicoService.ValidateServico(entity);
 

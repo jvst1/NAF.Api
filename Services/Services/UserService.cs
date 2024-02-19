@@ -58,7 +58,7 @@ namespace NAF.Domain.Services.Services
             if (!result.Succeeded)
                 throw new Exception($"Erro ao registrar usuário: {string.Join(" ", result.Errors)}");
 
-            var identityUser = _userManager.FindByEmailAsync(user.Email);
+            var identityUser = _userManager.FindByEmailAsync(user.Email).GetAwaiter().GetResult();
 
             entity = new Usuario
             {
@@ -71,9 +71,12 @@ namespace NAF.Domain.Services.Services
                 Situacao = SituacaoUsuario.Ativo,
                 Identificador = request.Apelido,
                 TelefoneCelular = request.PhoneNumber,
-                IdentityUserId = identityUser.Result.Id,
-                IdentityUser = identityUser.Result
+                IdentityUserId = identityUser.Id,
+                IdentityUser = identityUser
             };
+
+            _usuarioRepository.Insert(entity);
+            _usuarioRepository.SaveChanges();
 
             if (request.TipoPerfil.Equals(TipoPerfil.Aluno) || request.TipoPerfil.Equals(TipoPerfil.Professor))
             {
@@ -85,7 +88,6 @@ namespace NAF.Domain.Services.Services
             if (request.TipoPerfil.Equals(TipoPerfil.Aluno) || request.TipoPerfil.Equals(TipoPerfil.Professor))
             {
                 var solicitarLinkSenhaRequest = new SolicitarLinkSenhaRequest { Login = entity.DocumentoFederal, PrimeiroAcesso = true };
-
                 SolicitarLinkSenha(solicitarLinkSenhaRequest);
             }
 
