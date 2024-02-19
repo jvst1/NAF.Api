@@ -155,8 +155,7 @@ namespace NAF.Application.Services
             Chamado entity = GetChamado(id);
             Chamado chamado = entity;
 
-            if (request.CodigoOperador != null)
-                entity.CodigoOperador = request.CodigoOperador;
+            entity.CodigoOperador = request.CodigoOperador;
 
             _chamadoService.ValidateChamado(entity);
 
