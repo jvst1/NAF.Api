@@ -9,7 +9,7 @@ namespace NAF.Application.Interfaces
         List<Chamado> GetAllChamado(Guid codigoUsuario);
         Chamado GetChamado(Guid id);
         void UpdateChamado(UpdateChamadoRequest request, Guid codigoOperador, Guid id);
-        void UpdateChamadoSituacao(UpdateChamadoSituacaoRequest request);
+        void UpdateChamadoSituacao(UpdateChamadoSituacaoRequest request, Guid codigoUsuario, Guid id);
         void DeleteChamado(Guid id, Guid codigoUsuario);
         ChamadoDocumento CreateChamadoDocumento(FileUploadRequest request, Guid id);
         List<ChamadoDocumento> GetAllChamadoDocumento(Guid chamadoId);

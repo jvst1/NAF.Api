@@ -83,10 +83,9 @@ namespace NAF.Api.Controllers
         {
             try
             {
-                if (!id.Equals(request.Codigo))
-                    return BadRequest("O código informado não é o mesmo");
+                var operador = GetUsuarioLogado();
 
-                _chamadoService.UpdateChamadoSituacao(request);
+                _chamadoService.UpdateChamadoSituacao(request, operador.Codigo, id);
                 return Ok("Chamado atualizado com sucesso");
             }
             catch (Exception ex)
