@@ -259,7 +259,7 @@ namespace NAF.Application.Services
 
                 if (documento.CodigoChamado != Guid.Empty)
                 {
-                    if (documentoUsuarios.ContainsKey(documento.CodigoChamado))
+                    if (chamados.ContainsKey(documento.CodigoChamado))
                         documento.Chamado = chamados[documento.CodigoChamado];
                     else
                     {
@@ -350,7 +350,7 @@ namespace NAF.Application.Services
 
                 if (comentario.CodigoChamado != Guid.Empty)
                 {
-                    if (comentarioUsuarios.ContainsKey(comentario.CodigoChamado))
+                    if (chamados.ContainsKey(comentario.CodigoChamado))
                         comentario.Chamado = chamados[comentario.CodigoChamado];
                     else
                     {
