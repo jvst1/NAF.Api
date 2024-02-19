@@ -8,6 +8,7 @@ namespace NAF.Domain.Interface.Services
     public interface IUserService
     {
         public Task<UserToken> CreateUser(CreateUserRequest request, TipoPerfil tipoPerfil);
+        void UpdateUserProfile(UpdatePerfilUsuario request, Usuario usuario);
         void RecuperarSenha(RecuperarSenhaRequest request);
         void SolicitarLinkSenha(SolicitarLinkSenhaRequest request);
         Usuario? GetUserByCodigo(Guid codigoUsuario);

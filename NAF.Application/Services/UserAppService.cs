@@ -22,6 +22,11 @@ namespace NAF.Application.Services
             return await _userService.CreateUser(request, tipoPerfil);
         }
 
+        public void UpdateUserProfile(UpdatePerfilUsuario request, Usuario usuario)
+        {
+            _userService.UpdateUserProfile(request, usuario);
+        }
+
         public void RecuperarSenha(RecuperarSenhaRequest request)
         {
             _userService.RecuperarSenha(request);

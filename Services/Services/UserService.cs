@@ -89,6 +89,32 @@ namespace NAF.Domain.Services.Services
             return _jwtService.BuildToken(entity.Codigo, entity.Email, entity.TipoPerfil.GetValueOrDefault());
         }
 
+        public void UpdateUserProfile(UpdatePerfilUsuario request, Usuario usuario)
+        {
+            if (usuario.Nome != request.Nome)
+                usuario.Nome = request.Nome;
+
+            if (usuario.Email != request.Email)
+            {
+                if (_usuarioRepository.GetByEmail(request.Email!)?.Codigo == usuario.Codigo)
+                    usuario.Email = request.Email;
+                else
+                    throw new Exception("Esse e-mail não está disponível, tente outro e-mail");
+            }
+
+            if (usuario.Identificador != request.Identificador)
+                usuario.Identificador = request.Identificador;
+
+            if (usuario.TelefoneCelular != request.TelefoneCelular)
+                usuario.TelefoneCelular = request.TelefoneCelular;
+
+            if (usuario.TipoPerfil != request.TipoPerfil)
+                usuario.TipoPerfil = request.TipoPerfil;
+
+            _usuarioRepository.Update(usuario);
+            _usuarioRepository.SaveChanges();
+        }
+
         public void RecuperarSenha(RecuperarSenhaRequest request)
         {
             var validatedToken = _jwtService.ValidateToken(request.Token);
@@ -106,7 +132,7 @@ namespace NAF.Domain.Services.Services
 
             if (!string.IsNullOrWhiteSpace(request.Login) && !Util.ValidaDocumento(request.Login))
                 throw new ArgumentException("O documento federal informado é inválido");
-            
+
             request.Login = Util.DeixaNumeros(request.Login);
 
             if (usuario.Codigo != request.CodigoUsuario || usuario.DocumentoFederal != request.Login)

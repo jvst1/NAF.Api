@@ -60,6 +60,33 @@ namespace NAF.Api.Controllers
             }
         }
 
+        [HttpGet("Perfil")]
+        public ActionResult GetUserLogado()
+        {
+            try
+            {
+                return Ok(GetUsuarioLogado());
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
+
+        [HttpPut()]
+        public ActionResult AtualizarPerfilUsuario([FromBody] UpdatePerfilUsuario request)
+        {
+            try
+            {
+                _userAppService.UpdateUserProfile(request, GetUsuarioLogado());
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
+
         [AllowAnonymous]
         [HttpPost("RecuperarSenha")]
         public ActionResult RecuperarSenha([FromBody] RecuperarSenhaRequest request)

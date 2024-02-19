@@ -21,6 +21,8 @@ env:
   ECS_CLUSTER: ${{ secrets.AWS_ECS_CLUSTER }}                 
   ECS_TASK_DEFINITION: .aws/task-definition.json 
   CONTAINER_NAME: ${{ secrets.AWS_CONTAINER_NAME }}           
+  GMAIL_ACCESSKEY: ${{ secrets.GMAIL_ACCESSKEY }}           
+  GMAIL_SECRETKEY: ${{ secrets.GMAIL_SECRETKEY }}           
 
 jobs:
   deploy:
@@ -38,6 +40,8 @@ jobs:
           files: 'NAF.Api/appsettings.Production.json'
         env:
           ConnectionStrings.NAF: ${{ secrets.CONNECTIONSTRINGS_NAF }}
+          AppSettings.Gmail.AccessKeyId: ${{ secrets.GMAIL_ACCESSKEY }}
+          ConnectionStrings.Gmail.SecretAccessKey: ${{ secrets.GMAIL_SECRETKEY }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
