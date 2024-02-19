@@ -358,7 +358,7 @@ namespace NAF.Application.Services
                     }
                 }
             }
-            return comentarios;
+            return comentarios.OrderByDescending(o => o.DtInclusao).ToList();
         }
 
         public ChamadoComentario GetChamadoComentario(Guid chamadoId, Guid comentarioId)
