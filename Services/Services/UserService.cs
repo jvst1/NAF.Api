@@ -56,7 +56,7 @@ namespace NAF.Domain.Services.Services
             var result = await _userManager.CreateAsync(user, request.Password);
 
             if (!result.Succeeded)
-                throw new Exception($"Erro ao registrar usuário: {result.Errors}");
+                throw new Exception($"Erro ao registrar usuário: {string.Join(" ", result.Errors)}");
 
             var identityUser = _userManager.FindByEmailAsync(user.Email);
 
