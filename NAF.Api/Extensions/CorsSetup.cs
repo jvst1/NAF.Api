@@ -8,7 +8,7 @@
             {
                 options.AddPolicy(name: origins, policy =>
                 {
-                    policy.WithOrigins(configuration.GetSection("AppSettings:WebUrl").Value)
+                    policy.AllowAnyOrigin()
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                 });
