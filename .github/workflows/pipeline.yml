@@ -41,7 +41,7 @@ jobs:
         env:
           ConnectionStrings.NAF: ${{ secrets.CONNECTIONSTRINGS_NAF }}
           AppSettings.Gmail.AccessKeyId: ${{ secrets.GMAIL_ACCESSKEY }}
-          ConnectionStrings.Gmail.SecretAccessKey: ${{ secrets.GMAIL_SECRETKEY }}
+          AppSettings.Gmail.SecretAccessKey: ${{ secrets.GMAIL_SECRETKEY }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
