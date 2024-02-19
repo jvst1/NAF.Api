@@ -78,13 +78,16 @@ namespace NAF.Domain.Services.Services
             if (request.TipoPerfil.Equals(TipoPerfil.Aluno) || request.TipoPerfil.Equals(TipoPerfil.Professor))
             {
                 entity.Situacao = SituacaoUsuario.Inativo;
+            }
+            _usuarioRepository.Insert(entity);
+            _usuarioRepository.SaveChanges();
+
+            if (request.TipoPerfil.Equals(TipoPerfil.Aluno) || request.TipoPerfil.Equals(TipoPerfil.Professor))
+            {
                 var solicitarLinkSenhaRequest = new SolicitarLinkSenhaRequest { Login = entity.DocumentoFederal, PrimeiroAcesso = true };
 
                 SolicitarLinkSenha(solicitarLinkSenhaRequest);
             }
-
-            _usuarioRepository.Insert(entity);
-            _usuarioRepository.SaveChanges();
 
             return _jwtService.BuildToken(entity.Codigo, entity.Email, entity.TipoPerfil.GetValueOrDefault());
         }
@@ -175,7 +178,7 @@ namespace NAF.Domain.Services.Services
             if (usuario == null)
                 throw new KeyNotFoundException("Usuário não encontrado");
 
-            if (usuario.Situacao == SituacaoUsuario.Inativo)
+            if (usuario.Situacao == SituacaoUsuario.Inativo && !request.PrimeiroAcesso)
                 throw new KeyNotFoundException("O usuário está inativo e não pode solicitar redefinição de senha.");
 
             if (usuario.Situacao.GetValueOrDefault(0) == SituacaoUsuario.Ativo && request.PrimeiroAcesso)
