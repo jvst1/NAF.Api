@@ -145,8 +145,14 @@ namespace NAF.Domain.Services.Services
 
             Util.ValidaSenha(request.NovaSenha);
 
-            _userManager.RemovePasswordAsync(usuarioIdentity);
-            _userManager.AddPasswordAsync(usuarioIdentity, request.NovaSenha);
+            var remove = _userManager.RemovePasswordAsync(usuarioIdentity).Result;
+            var add = _userManager.AddPasswordAsync(usuarioIdentity, request.NovaSenha).Result;
+
+            if (!remove.Succeeded || !add.Succeeded)
+            {
+                var errors = !remove.Succeeded ? string.Join(" ", remove.Errors) : string.Join(" ", add.Errors);
+                throw new Exception(errors);
+            }
 
             if (primeiraVez)
             {
